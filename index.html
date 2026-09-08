@@ -582,7 +582,7 @@ body.light-mode .aurora-mark::before{opacity:.25}
   opacity:0;pointer-events:none}
 .slide.on .bgvideo{animation:fadein 1.6s ease .3s both;opacity:.85}
 .bgshade{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(90deg,rgba(6,6,14,.86) 0%,rgba(6,6,14,.6) 55%,rgba(6,6,14,.25) 100%)}
+  background:linear-gradient(180deg,rgba(6,6,14,.35) 0%,rgba(6,6,14,.55) 45%,rgba(6,6,14,.35) 100%)}
 #s10 h2,#s10 .three,#s10 .cta{position:relative;z-index:2}
 #s10 .chrome{z-index:2}
 body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0%,rgba(243,242,236,.65) 55%,rgba(243,242,236,.3) 100%)}
@@ -912,7 +912,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 
   <!-- 11 -->
   <section class="slide" id="s10">
-    <video class="bgvideo" muted playsinline preload="auto" src="img/outro.mp4"></video>
+    <video class="bgvideo" muted playsinline preload="auto"><source src="img/outro.webm" type="video/webm"><source src="img/outro.mp4" type="video/mp4"></video>
     <div class="bgshade"></div>
     
     <h2>Stop emailing spreadsheets to treasury.</h2>
@@ -1051,8 +1051,10 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     stage.style.transform="translate(-50%,-50%) scale("+s+")";
   }
   window.addEventListener("resize",fit);fit();
-  var start=parseInt((location.hash||"").replace("#",""),10);
-  go(isNaN(start)?0:start-1);
+  var start=parseInt((location.hash||"").replace("#","").replace(/[^0-9]/g,""),10);
+  if(isNaN(start)||start<1)start=1;
+  if(start-1===i){var v0=slides[i].querySelector(".bgvideo");if(v0){v0.play().catch(function(){})}}
+  else go(start-1);
 
   /* fullscreen */
   document.addEventListener("keydown",function(e){
