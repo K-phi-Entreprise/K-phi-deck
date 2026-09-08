@@ -993,6 +993,33 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});
     else document.exitFullscreen();
   });
+
+  /* scroll wheel navigation */
+  var wheelAcc=0,wheelTimer;
+  document.addEventListener("wheel",function(e){
+    if(transitioning)return;
+    e.preventDefault();
+    wheelAcc+=e.deltaY;
+    clearTimeout(wheelTimer);
+    wheelTimer=setTimeout(function(){wheelAcc=0},200);
+    if(Math.abs(wheelAcc)>60){
+      go(wheelAcc>0?i+1:i-1);
+      wheelAcc=0;
+    }
+  },{passive:false});
+
+  /* touch swipe navigation */
+  var touchY=null;
+  document.addEventListener("touchstart",function(e){
+    if(e.target.closest(".nav"))return;
+    touchY=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(touchY===null||transitioning)return;
+    var dy=touchY-e.changedTouches[0].clientY;
+    touchY=null;
+    if(Math.abs(dy)>50)go(dy>0?i+1:i-1);
+  },{passive:true});
 })();
 </script>
 </body>
