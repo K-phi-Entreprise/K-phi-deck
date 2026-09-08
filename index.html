@@ -583,7 +583,8 @@ body.light-mode .aurora-mark::before{opacity:.25}
 .slide.on .bgvideo{animation:fadein 1.6s ease .3s both;opacity:.85}
 .bgshade{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(90deg,rgba(6,6,14,.86) 0%,rgba(6,6,14,.6) 55%,rgba(6,6,14,.25) 100%)}
-#s10 h2,#s10 .three,#s10 .cta,#s10 .chrome{position:relative;z-index:2}
+#s10 h2,#s10 .three,#s10 .cta{position:relative;z-index:2}
+#s10 .chrome{z-index:2}
 body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0%,rgba(243,242,236,.65) 55%,rgba(243,242,236,.3) 100%)}
 
 /* 10 close */
@@ -911,7 +912,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 
   <!-- 11 -->
   <section class="slide" id="s10">
-    <video class="bgvideo" autoplay muted loop playsinline preload="auto" src="img/outro.mp4"></video>
+    <video class="bgvideo" muted playsinline preload="auto" src="img/outro.mp4"></video>
     <div class="bgshade"></div>
     
     <h2>Stop emailing spreadsheets to treasury.</h2>
@@ -1001,6 +1002,8 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     dots[i].classList.add("active");
     bar.style.width=((i+1)/slides.length*100)+"%";
     location.hash=i+1;
+    var v=slides[i].querySelector(".bgvideo");
+    if(v){try{v.currentTime=0;v.play().catch(function(){})}catch(e){}}
     setTimeout(function(){
       slides.forEach(function(s){s.classList.remove("above");s.style.transform="";s.style.opacity="";s.style.filter=""});
       transitioning=false;
