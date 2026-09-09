@@ -237,30 +237,30 @@ h2{font-size:40px;max-width:27ch}
 @keyframes swell{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.06)}}
 .half svg polyline{transform-origin:50% 88px}
 
-/* 5 the objection: why the GL when I have AR/AP */
+/* 5 three shortcomings of AR/AP forecasting */
 #s3c h2{font-size:34px;max-width:40ch}
-.cover{margin-top:16px}
-.cover .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:flex;gap:26px}
-.cover .lab b{font-weight:500;letter-spacing:.1em}
-.cover .lab b.t{color:var(--teal)} .cover .lab b.g{color:var(--gold)}
-.tiles{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
-.tile2{height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11.5px;text-align:center;padding:0 4px;line-height:1.15}
-.tile2.t{border:1px solid rgba(45,212,191,.55);background:rgba(45,212,191,.14);color:var(--white)}
-.tile2.g{border:1px solid rgba(200,168,78,.5);background:rgba(200,168,78,.10);color:var(--dim)}
-.args{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
-.arg{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:14px 16px}
-.arg i{font-style:normal;font-family:var(--serif);font-size:22px;color:var(--gold);line-height:1;display:block;margin-bottom:6px}
-.arg b{display:block;font-family:var(--serif);font-weight:700;font-size:15.5px;line-height:1.25;margin-bottom:6px}
-.arg p{font-size:12.5px;color:var(--gray);line-height:1.45}
-.arg.wide{grid-column:span 2;border-color:rgba(200,168,78,.45);background:linear-gradient(120deg,rgba(200,168,78,.12),rgba(45,212,191,.05))}
-.arg.wide p{color:var(--dim)}
-.obj-verdict{margin-top:14px;font-size:13.5px;color:var(--dim);line-height:1.5;border-left:3px solid var(--gold);padding-left:14px}
-.obj-verdict b{color:var(--white);font-weight:500}
-#s3c .tile2,#s3c .arg,#s3c .obj-verdict{opacity:0}
-.slide.on .tile2{animation:fadein .35s ease both}
-.slide.on .arg{animation:fadein .45s ease both}
-.slide.on .obj-verdict{animation:fadein .5s ease 2.6s both}
-
+.short{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.sc{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:16px 18px 14px;display:flex;flex-direction:column}
+.sc .n{font-family:var(--serif);font-size:22px;color:var(--coral);line-height:1;margin-bottom:8px}
+.sc h3{font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.2;margin-bottom:10px}
+.sc svg{width:100%;height:auto;display:block;margin-bottom:14px}
+.sc p{font-size:13px;color:var(--dim);line-height:1.55;margin-top:4px}
+.sc p b{color:var(--white);font-weight:500}
+.sc .lg{display:flex;gap:14px;font-size:10.5px;color:var(--gray);margin-bottom:6px}
+.sc .lg i{display:inline-block;width:10px;height:8px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.ledger-line{margin-top:26px;border-left:3px solid var(--gold);padding:8px 0 8px 14px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.ledger-line b{color:var(--white);font-weight:500}
+#s3c .sc,#s3c .ledger-line{opacity:0}
+.slide.on .sc{animation:fadein .5s ease both}
+.slide.on .sc:nth-child(1){animation-delay:.15s}.slide.on .sc:nth-child(2){animation-delay:.7s}.slide.on .sc:nth-child(3){animation-delay:1.25s}
+.slide.on .ledger-line{animation:fadein .5s ease 2s both}
+.sc svg .draw{stroke-dasharray:900;stroke-dashoffset:900}
+.slide.on .sc:nth-child(1) svg .draw{animation:drawc 1.1s ease .5s forwards}
+.slide.on .sc:nth-child(2) svg .draw{animation:drawc 1.1s ease 1.05s forwards}
+.slide.on .sc:nth-child(3) svg .draw{animation:drawc 1.1s ease 1.6s forwards}
+.sc svg .seg{transform-origin:left;transform:scaleX(0)}
+.slide.on .sc svg .seg{animation:growx .5s ease forwards}
+@keyframes growx{to{transform:scaleX(1)}}
 /* 4 header lanes */
 .s4head{display:flex;align-items:flex-start;gap:44px}
 .s4head h2{flex:1;max-width:24ch;font-size:35px;margin-top:-2px}
@@ -668,7 +668,7 @@ body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0
 
 #bar{position:absolute;left:0;bottom:0;height:2px;background:var(--gold);transition:width .25s ease}
 a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.half svg polyline{stroke-dashoffset:0}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3c .tile2,#s3c .arg,#s3c .obj-verdict,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
+@media (prefers-reduced-motion:reduce){.half svg polyline,.sc svg .draw{stroke-dashoffset:0}.sc svg .seg{transform:none}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3c .sc,#s3c .ledger-line,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
 
 :fullscreen{background:var(--bg)}
 :fullscreen #viewport{width:100vw;height:100vh}
@@ -860,20 +860,47 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 
   <!-- 5 -->
   <section class="slide" id="s3c">
-    <div class="eyebrow">The objection</div>
-    <h2>“Why the ledger? I already forecast from AR and AP.”</h2>
-    <div class="cover">
-      <div class="lab"><span><b class="t">Teal</b> — what a direct AR/AP forecast sees</span><span><b class="g">Brass</b> — what only the ledger sees</span></div>
-      <div class="tiles"><div class="tile2 t" style="animation-delay:0.20s">AR</div><div class="tile2 t" style="animation-delay:0.28s">AP</div><div class="tile2 g" style="animation-delay:0.36s">Payroll</div><div class="tile2 g" style="animation-delay:0.44s">Tax</div><div class="tile2 g" style="animation-delay:0.52s">Debt service</div><div class="tile2 g" style="animation-delay:0.60s">CapEx & leases</div><div class="tile2 g" style="animation-delay:0.68s">Intercompany</div><div class="tile2 g" style="animation-delay:0.76s">Accruals & provisions</div><div class="tile2 g" style="animation-delay:0.84s">FX & hedges</div></div>
+    <div class="eyebrow">The objection — “I already forecast from AR and AP”</div>
+    <h2>Three things an AR/AP forecast cannot see.</h2>
+    <div class="short">
+      <div class="sc"><div class="n">1</div><h3>Half the cash flow.</h3>
+        <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHAT MOVES CASH IN A QUARTER</text>
+  <rect class="seg" x="0" y="34" width="106" height="30" rx="3" fill="rgba(45,212,191,.85)" style="animation-delay:0.55s"/><rect class="seg" x="108" y="34" width="77" height="30" rx="3" fill="rgba(45,212,191,.85)" style="animation-delay:0.67s"/><rect class="seg" x="187" y="34" width="63" height="30" rx="3" fill="rgba(200,168,78,.55)" style="animation-delay:0.79s"/><rect class="seg" x="252" y="34" width="20" height="30" rx="3" fill="rgba(200,168,78,.55)" style="animation-delay:0.91s"/><rect class="seg" x="274" y="34" width="27" height="30" rx="3" fill="rgba(200,168,78,.55)" style="animation-delay:1.03s"/><rect class="seg" x="302" y="34" width="30" height="30" rx="3" fill="rgba(200,168,78,.55)" style="animation-delay:1.15s"/><rect class="seg" x="335" y="34" width="23" height="30" rx="3" fill="rgba(200,168,78,.55)" style="animation-delay:1.27s"/><text x="53" y="82" text-anchor="middle" font-size="9" fill="var(--teal)">Collections</text><text x="147" y="82" text-anchor="middle" font-size="9" fill="var(--teal)">Payables</text><text x="219" y="82" text-anchor="middle" font-size="9" fill="var(--gray)">Payroll</text><text x="262" y="82" text-anchor="middle" font-size="9" fill="var(--gray)">Tax</text><text x="287" y="82" text-anchor="middle" font-size="9" fill="var(--gray)">Debt</text><text x="318" y="82" text-anchor="middle" font-size="9" fill="var(--gray)">CapEx</text><text x="346" y="82" text-anchor="middle" font-size="9" fill="var(--gray)">IC</text>
+  <line class="draw" x1="0" y1="100" x2="187" y2="100" stroke="var(--teal)" stroke-width="2"/>
+  <text x="0" y="114" font-size="9.5" fill="var(--teal)">what AR/AP forecasting sees · ~half</text>
+</svg>
+        <p>AR and AP are two subledgers. <b>Payroll, tax, debt service, capex, intercompany</b> — the flows that decide the quarter — are in the ledger and nowhere else.</p></div>
+      <div class="sc"><div class="n">2</div><h3>Past sixty days.</h3>
+        <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">HOW FAR IT SEES</text>
+  <text x="0" y="40" font-size="9.5" fill="var(--teal)">AR/AP · invoices already issued</text>
+  <rect class="seg" x="0" y="44" width="80" height="12" rx="2" fill="rgba(45,212,191,.85)" style="animation-delay:1.05s"/>
+  <text x="86" y="54" font-size="9" fill="var(--gray)">→ nothing left to age</text>
+  <text x="0" y="76" font-size="9.5" fill="var(--gold)">Ledger run-off, then budget</text>
+  <rect class="seg" x="0" y="80" width="220" height="12" rx="2" fill="rgba(45,212,191,.6)" style="animation-delay:1.25s"/>
+  <rect class="seg" x="220" y="80" width="140" height="12" rx="2" fill="rgba(200,168,78,.6)" style="animation-delay:1.45s"/>
+  <line class="draw" x1="0" y1="104" x2="360" y2="104" stroke="rgba(154,164,180,.4)" stroke-width="1"/>
+  <text x="0" y="116" font-size="9" fill="var(--gray)">day 0</text>
+  <text x="80" y="116" font-size="9" fill="var(--gray)" text-anchor="middle">60 days</text>
+  <text x="220" y="116" font-size="9" fill="var(--gray)" text-anchor="middle">week 13</text>
+  <text x="360" y="116" font-size="9" fill="var(--gray)" text-anchor="end">+ 3 quarters</text>
+</svg>
+        <p>An invoice not yet issued does not exist in AR. <b>Sixty days out there is nothing left to age</b> — and no handoff to a plan. The ledger runs off to week 13 and the budget carries it from there.</p></div>
+      <div class="sc"><div class="n">3</div><h3>When the cash lands.</h3>
+        <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
+  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHEN THE CASH ACTUALLY LANDS</text>
+  <line x1="90" y1="24" x2="90" y2="100" stroke="var(--teal)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="90" y="34" font-size="9.5" fill="var(--teal)" text-anchor="middle">due date · 30 days</text>
+  <polyline class="draw" points="0,100.0 3,100.0 6,100.0 9,100.0 12,100.0 15,100.0 18,100.0 21,100.0 24,100.0 27,100.0 30,100.0 33,100.0 36,100.0 39,100.0 42,100.0 45,100.0 48,100.0 51,100.0 54,100.0 57,100.0 60,100.0 63,100.0 66,100.0 69,100.0 72,100.0 75,100.0 78,100.0 81,100.0 84,100.0 87,100.0 90,100.0 93,99.9 96,99.9 99,99.9 102,99.8 105,99.8 108,99.7 111,99.6 114,99.5 117,99.3 120,99.1 123,98.9 126,98.5 129,98.2 132,97.7 135,97.1 138,96.4 141,95.6 144,94.6 147,93.5 150,92.1 153,90.6 156,88.9 159,87.0 162,84.9 165,82.5 168,80.0 171,77.2 174,74.3 177,71.2 180,68.0 183,64.7 186,61.4 189,58.0 192,54.8 195,51.7 198,48.8 201,46.1 204,43.8 207,41.8 210,40.1 213,39.0 216,38.2 219,38.0 222,38.2 225,39.0 228,40.1 231,41.8 234,43.8 237,46.1 240,48.8 243,51.7 246,54.8 249,58.0 252,61.4 255,64.7 258,68.0 261,71.2 264,74.3 267,77.2 270,80.0 273,82.5 276,84.9 279,87.0 282,88.9 285,90.6 288,92.1 291,93.5 294,94.6 297,95.6 300,96.4 303,97.1 306,97.7 309,98.2 312,98.5 315,98.9 318,99.1 321,99.3 324,99.5 327,99.6 330,99.7 333,99.8 336,99.8 339,99.9 342,99.9 345,99.9 348,100.0 351,100.0 354,100.0 357,100.0 360,100.0" fill="rgba(200,168,78,.12)" stroke="var(--gold)" stroke-width="1.8"/>
+  <text x="219" y="34" font-size="9.5" fill="var(--gold)" text-anchor="middle">measured · 73 days</text>
+  <line x1="0" y1="100" x2="360" y2="100" stroke="rgba(154,164,180,.4)"/>
+  <text x="0" y="114" font-size="9" fill="var(--gray)">day 0</text>
+  <text x="360" y="114" font-size="9" fill="var(--gray)" text-anchor="end">day 120</text>
+</svg>
+        <p>A due date is what was agreed. <b>A 3-month DSO on a segmented perimeter</b> — entity, BU, counterparty — is what actually happens. Measured, not declared.</p></div>
     </div>
-    <div class="args">
-      <div class="arg" style="animation-delay:1.0s"><i>1</i><b>The ledger is exhaustive</b><p>AR and AP are two subledgers. Payroll, tax, debt, capex, intercompany, accruals, FX — the flows that decide the quarter — live only in the GL. A forecast from AR/AP is a forecast of two lines.</p></div>
-      <div class="arg" style="animation-delay:1.2s"><i>2</i><b>Due dates are theoretical</b><p>An invoice's due date is a promise. A 3-month DSO on a well-segmented perimeter — entity, BU, counterparty — is often a better predictor of when the cash lands. And it is measured, not declared.</p></div>
-      <div class="arg" style="animation-delay:1.4s"><i>3</i><b>Think of the whole system</b><p>If the destination is hedging — balance-sheet hedge, cash-flow hedge — exposures come from the balance sheet. The indirect method plugs into financial management; a due-date list does not.</p></div>
-      <div class="arg" style="animation-delay:1.6s"><i>4</i><b>Accounting makes it legible</b><p>Statements, forecast, scenarios, sensitivities — all off one coherent base, every number tying back to an entry. Nothing to reconcile between the forecast and the books.</p></div>
-      <div class="arg wide" style="animation-delay:1.9s"><i>5</i><b>And the life cycle: the budget carries the long term, the ledger takes it over</b><p>Version after version, each close replaces a month of budget with a month of actuals on the same axis. AR and AP have no such handoff — they know the next sixty days and nothing after. The GL is the only source that connects to a plan.</p></div>
-    </div>
-    <div class="obj-verdict">The question is not which source holds the most precise due dates. It is <b>which system is robust, fits the finance processes, and can steer and hedge afterwards</b> — and that is the ledger.</div>
+    <div class="ledger-line">And the parts that come after a forecast — <b>reconciling to the statements, hedging the exposures, replacing budget with actuals close by close</b> — need a coherent accounting base underneath. A list of due dates has none. The ledger is one.</div>
     <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">05 / 9</div></div>
   </section>
 
