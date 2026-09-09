@@ -238,7 +238,7 @@ h2{font-size:40px;max-width:27ch}
 .half svg polyline{transform-origin:50% 88px}
 
 /* 5 three shortcomings of AR/AP forecasting */
-#s3c h2{font-size:34px;max-width:40ch}
+#s3c h2{font-size:34px;max-width:none}
 .short{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
 .sc{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:16px 18px 14px;display:flex;flex-direction:column}
 .sc .n{font-family:var(--serif);font-size:22px;color:var(--coral);line-height:1;margin-bottom:8px}
@@ -861,7 +861,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
   <!-- 5 -->
   <section class="slide" id="s3c">
     <div class="eyebrow">The objection — “I already forecast from AR and AP”</div>
-    <h2>Three things an AR/AP forecast cannot see.</h2>
+    <h2>Three things AR/AP forecasting cannot give you.</h2>
     <div class="short">
       <div class="sc"><div class="n">1</div><h3>Half the cash flow.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
@@ -871,22 +871,28 @@ html:fullscreen,body:fullscreen{overflow:hidden}
   <text x="0" y="114" font-size="9.5" fill="var(--teal)">what AR/AP forecasting sees · ~half</text>
 </svg>
         <p>AR and AP are two subledgers. <b>Payroll, tax, debt service, capex, intercompany</b> — the flows that decide the quarter — are in the ledger and nowhere else.</p></div>
-      <div class="sc"><div class="n">2</div><h3>Past the invoices it holds.</h3>
+      <div class="sc"><div class="n">2</div><h3>A balance sheet.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
-  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">HOW FAR IT SEES</text>
-  <text x="0" y="40" font-size="9.5" fill="var(--teal)">AR/AP · run-off of the invoices it holds</text>
-  <rect class="seg" x="0" y="44" width="80" height="12" rx="2" fill="rgba(45,212,191,.85)" style="animation-delay:1.05s"/>
-  <text x="86" y="54" font-size="9" fill="var(--gray)">→ nothing generates the next one</text>
-  <text x="0" y="76" font-size="9.5" fill="var(--gold)">Ledger run-off + revenue run-rate, then budget</text>
-  <rect class="seg" x="0" y="80" width="220" height="12" rx="2" fill="rgba(45,212,191,.6)" style="animation-delay:1.25s"/>
-  <rect class="seg" x="220" y="80" width="140" height="12" rx="2" fill="rgba(200,168,78,.6)" style="animation-delay:1.45s"/>
-  <line class="draw" x1="0" y1="104" x2="360" y2="104" stroke="rgba(154,164,180,.4)" stroke-width="1"/>
-  <text x="0" y="116" font-size="9" fill="var(--gray)">day 0</text>
-  <text x="80" y="116" font-size="9" fill="var(--gray)" text-anchor="middle">60 days</text>
-  <text x="220" y="116" font-size="9" fill="var(--gray)" text-anchor="middle">week 13</text>
-  <text x="360" y="116" font-size="9" fill="var(--gray)" text-anchor="end">+ 3 quarters</text>
+  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHAT THE EXTRAPOLATION PRODUCES</text>
+  <text x="0" y="36" font-size="9.5" fill="var(--teal)">AR/AP · a list of dated cash movements</text>
+  <g class="seg" style="animation-delay:1.05s">
+    <rect x="0" y="42" width="160" height="10" rx="2" fill="rgba(45,212,191,.35)"/>
+    <rect x="0" y="56" width="160" height="10" rx="2" fill="rgba(45,212,191,.35)"/>
+    <rect x="0" y="70" width="160" height="10" rx="2" fill="rgba(45,212,191,.35)"/>
+    <rect x="0" y="84" width="160" height="10" rx="2" fill="rgba(45,212,191,.35)"/>
+  </g>
+  <text x="200" y="36" font-size="9.5" fill="var(--gold)">Ledger · projected statements</text>
+  <g class="seg" style="animation-delay:1.3s">
+    <rect x="200" y="42" width="160" height="16" rx="3" fill="rgba(200,168,78,.22)" stroke="rgba(200,168,78,.55)"/>
+    <text x="206" y="53" font-size="9" fill="var(--white)">Balance sheet</text><text x="354" y="53" font-size="8.5" fill="var(--gold)" text-anchor="end">AR · AP · debt · cash</text>
+    <rect x="200" y="62" width="160" height="16" rx="3" fill="rgba(200,168,78,.16)" stroke="rgba(200,168,78,.4)"/>
+    <text x="206" y="73" font-size="9" fill="var(--white)">P&amp;L</text><text x="354" y="73" font-size="8.5" fill="var(--gold)" text-anchor="end">vs budget, line by line</text>
+    <rect x="200" y="82" width="160" height="16" rx="3" fill="rgba(200,168,78,.16)" stroke="rgba(200,168,78,.4)"/>
+    <text x="206" y="93" font-size="9" fill="var(--white)">Cash flow</text><text x="354" y="93" font-size="8.5" fill="var(--gold)" text-anchor="end">direct &amp; indirect</text>
+  </g>
+  <text x="200" y="112" font-size="9" fill="var(--gray)">covenants, exposures, variance — read from here</text>
 </svg>
-        <p>Both methods hold the same invoices. AR can only <b>run them off</b>: once the last one is collected, around sixty days, the curve is at zero — it has no way to generate next week's invoice. The ledger's revenue run-rate <b>projects</b> the next ones through the measured DSO, and the budget takes over when the run-rate fades.</p></div>
+        <p>Extrapolate all you like — an AR/AP forecast still only produces <b>cash movements</b>. Extrapolating from the ledger produces <b>projected statements</b>: a receivables balance at end-November, a debt, a cash position. Covenants, hedge exposures and the comparison to budget are read from a balance sheet, not from a list.</p></div>
       <div class="sc"><div class="n">3</div><h3>When the cash lands.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
   <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHEN THE CASH ACTUALLY LANDS</text>
@@ -900,7 +906,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 </svg>
         <p>A due date is what was agreed. <b>A 3-month DSO on a segmented perimeter</b> — entity, BU, counterparty — is what actually happens. Measured, not declared.</p></div>
     </div>
-    <div class="ledger-line">And the parts that come after a forecast — <b>reconciling to the statements, hedging the exposures, replacing budget with actuals close by close</b> — need a coherent accounting base underneath. A list of due dates has none. The ledger is one.</div>
+    <div class="ledger-line">And because the ledger forecast is written in the same lines as the budget, <b>the budget can take it over month by month, and every close cuts a version</b> — a list of due dates has no such anchor and no such handoff.</div>
     <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">05 / 9</div></div>
   </section>
 
