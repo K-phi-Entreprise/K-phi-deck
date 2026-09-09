@@ -237,6 +237,30 @@ h2{font-size:40px;max-width:27ch}
 @keyframes swell{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.06)}}
 .half svg polyline{transform-origin:50% 88px}
 
+/* 5 the objection: why the GL when I have AR/AP */
+#s3c h2{font-size:34px;max-width:40ch}
+.cover{margin-top:16px}
+.cover .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:8px;display:flex;gap:26px}
+.cover .lab b{font-weight:500;letter-spacing:.1em}
+.cover .lab b.t{color:var(--teal)} .cover .lab b.g{color:var(--gold)}
+.tiles{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.tile2{height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11.5px;text-align:center;padding:0 4px;line-height:1.15}
+.tile2.t{border:1px solid rgba(45,212,191,.55);background:rgba(45,212,191,.14);color:var(--white)}
+.tile2.g{border:1px solid rgba(200,168,78,.5);background:rgba(200,168,78,.10);color:var(--dim)}
+.args{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}
+.arg{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:14px 16px}
+.arg i{font-style:normal;font-family:var(--serif);font-size:22px;color:var(--gold);line-height:1;display:block;margin-bottom:6px}
+.arg b{display:block;font-family:var(--serif);font-weight:700;font-size:15.5px;line-height:1.25;margin-bottom:6px}
+.arg p{font-size:12.5px;color:var(--gray);line-height:1.45}
+.arg.wide{grid-column:span 2;border-color:rgba(200,168,78,.45);background:linear-gradient(120deg,rgba(200,168,78,.12),rgba(45,212,191,.05))}
+.arg.wide p{color:var(--dim)}
+.obj-verdict{margin-top:14px;font-size:13.5px;color:var(--dim);line-height:1.5;border-left:3px solid var(--gold);padding-left:14px}
+.obj-verdict b{color:var(--white);font-weight:500}
+#s3c .tile2,#s3c .arg,#s3c .obj-verdict{opacity:0}
+.slide.on .tile2{animation:fadein .35s ease both}
+.slide.on .arg{animation:fadein .45s ease both}
+.slide.on .obj-verdict{animation:fadein .5s ease 2.6s both}
+
 /* 4 header lanes */
 .s4head{display:flex;align-items:flex-start;gap:44px}
 .s4head h2{flex:1;max-width:24ch;font-size:35px;margin-top:-2px}
@@ -644,7 +668,7 @@ body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0
 
 #bar{position:absolute;left:0;bottom:0;height:2px;background:var(--gold);transition:width .25s ease}
 a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.half svg polyline{stroke-dashoffset:0}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
+@media (prefers-reduced-motion:reduce){.half svg polyline{stroke-dashoffset:0}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3c .tile2,#s3c .arg,#s3c .obj-verdict,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
 
 :fullscreen{background:var(--bg)}
 :fullscreen #viewport{width:100vw;height:100vh}
@@ -695,7 +719,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         </div></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The problem</span><span>The solution</span></div><div class="count">01 / 8</div></div>
+    <div class="chrome"><div class="sections"><span>The problem</span><span>The solution</span></div><div class="count">01 / 9</div></div>
   </section>
 
   <!-- 2 -->
@@ -733,7 +757,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       <div class="f"><b><span class="cad"><span class="dot" id="dot-b"></span></span> Next 3 quarters — the plan carries it</b>
         <p>Driver-based budget with a ten-lever simulator, progressively replaced by actuals as the months close beneath it.</p></div>
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">02 / 8</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">02 / 9</div></div>
   </section>
 
   <!-- 3 -->
@@ -777,7 +801,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       <div class="lb">So what</div>
       <p>Two things are there from day one and never leave: <b>the ledger and the spreadsheet</b>. Everything bought later covers one end of the horizon and hands its work back to the middle, so the spreadsheet takes on more with each purchase, not less. <b>The ledger is the only asset a forecast can be built from at any stage of the journey.</b></p>
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">03 / 8</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">03 / 9</div></div>
   </section>
 
   <!-- 4 -->
@@ -831,7 +855,26 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       </div>
 
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">04 / 8</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">04 / 9</div></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" id="s3c">
+    <div class="eyebrow">The objection</div>
+    <h2>“Why the ledger? I already forecast from AR and AP.”</h2>
+    <div class="cover">
+      <div class="lab"><span><b class="t">Teal</b> — what a direct AR/AP forecast sees</span><span><b class="g">Brass</b> — what only the ledger sees</span></div>
+      <div class="tiles"><div class="tile2 t" style="animation-delay:0.20s">AR</div><div class="tile2 t" style="animation-delay:0.28s">AP</div><div class="tile2 g" style="animation-delay:0.36s">Payroll</div><div class="tile2 g" style="animation-delay:0.44s">Tax</div><div class="tile2 g" style="animation-delay:0.52s">Debt service</div><div class="tile2 g" style="animation-delay:0.60s">CapEx & leases</div><div class="tile2 g" style="animation-delay:0.68s">Intercompany</div><div class="tile2 g" style="animation-delay:0.76s">Accruals & provisions</div><div class="tile2 g" style="animation-delay:0.84s">FX & hedges</div></div>
+    </div>
+    <div class="args">
+      <div class="arg" style="animation-delay:1.0s"><i>1</i><b>The ledger is exhaustive</b><p>AR and AP are two subledgers. Payroll, tax, debt, capex, intercompany, accruals, FX — the flows that decide the quarter — live only in the GL. A forecast from AR/AP is a forecast of two lines.</p></div>
+      <div class="arg" style="animation-delay:1.2s"><i>2</i><b>Due dates are theoretical</b><p>An invoice's due date is a promise. A 3-month DSO on a well-segmented perimeter — entity, BU, counterparty — is often a better predictor of when the cash lands. And it is measured, not declared.</p></div>
+      <div class="arg" style="animation-delay:1.4s"><i>3</i><b>Think of the whole system</b><p>If the destination is hedging — balance-sheet hedge, cash-flow hedge — exposures come from the balance sheet. The indirect method plugs into financial management; a due-date list does not.</p></div>
+      <div class="arg" style="animation-delay:1.6s"><i>4</i><b>Accounting makes it legible</b><p>Statements, forecast, scenarios, sensitivities — all off one coherent base, every number tying back to an entry. Nothing to reconcile between the forecast and the books.</p></div>
+      <div class="arg wide" style="animation-delay:1.9s"><i>5</i><b>And the life cycle: the budget carries the long term, the ledger takes it over</b><p>Version after version, each close replaces a month of budget with a month of actuals on the same axis. AR and AP have no such handoff — they know the next sixty days and nothing after. The GL is the only source that connects to a plan.</p></div>
+    </div>
+    <div class="obj-verdict">The question is not which source holds the most precise due dates. It is <b>which system is robust, fits the finance processes, and can steer and hedge afterwards</b> — and that is the ledger.</div>
+    <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">05 / 9</div></div>
   </section>
 
   <!-- 4 -->
@@ -899,7 +942,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
           <td class="gl">Does not rely heavily on Excel — the rules sit in the engine, versioned and auditable</td></tr>
       </tbody>
     </table>
-    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">05 / 8</div></div>
+    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">06 / 9</div></div>
   </section>
 
 
@@ -946,7 +989,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     <div class="claude"><b>All of it exposed to Claude</b>
       <p>Native MCP server with your own login: read the forecast, run a scenario, write it back — scoped per tenant, every action in the audit trail.</p></div>
     <p class="foot">Kyriba is a trademark of Kyriba Corp. K-Φ is an independent product of K-phi Enterprise Kft. and is not affiliated with, endorsed by, or partnered with Kyriba. Intuit and QuickBooks are registered trademarks of Intuit Inc.</p>
-    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">06 / 8</div></div>
+    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">07 / 9</div></div>
   </section>
 
   <!-- 6 -->
@@ -1006,7 +1049,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       </div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">07 / 8</div></div>
+    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">08 / 9</div></div>
   </section>
 
   <!-- 11 -->
@@ -1021,7 +1064,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       <div><b>Minutes, not a quarter</b><p>No implementation project, no consultants. Upload a ledger and the platform is standing.</p></div>
     </div>
     <p class="cta">See it on your own ledger — <a href="https://k-phi.com">k-phi.com</a></p>
-    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">08 / 8</div></div>
+    <div class="chrome"><div class="sections"><span>The problem</span><span class="here">The solution</span></div><div class="count">09 / 9</div></div>
   </section>
 
   <div id="modeRipple"></div>
