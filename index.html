@@ -192,44 +192,40 @@ h2{font-size:40px;max-width:27ch}
 .slide.on .bar2.kphi{animation-delay:1.75s}
 .slide.on .sowhat{animation:fadein .55s ease 2.3s both}
 
-/* 4 the granularity explosion */
-#s3b h2{font-size:34px;max-width:36ch}
-.expl{display:grid;grid-template-columns:250px 56px 1fr 56px 330px;gap:0;align-items:center;margin-top:18px;flex:1;max-height:400px}
-.expl .ar{text-align:center;color:var(--gray);font-size:20px}
-.xp{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:16px 18px;height:100%;display:flex;flex-direction:column}
-.xp .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:10px}
-.xp h3{font-family:var(--serif);font-weight:700;font-size:18px;line-height:1.2;margin-bottom:8px}
-.xp p{font-size:12.5px;color:var(--gray);line-height:1.45}
-.xp.one{justify-content:center;text-align:center}
-.xp.one .tile{margin:10px auto 12px;width:170px;border:1px solid rgba(45,212,191,.45);background:rgba(45,212,191,.09);
-  border-radius:6px;padding:12px}
-.xp.one .tile b{display:block;font-family:var(--serif);font-size:26px;font-weight:700}
-.xp.one .tile span{font-size:11px;color:var(--gray);letter-spacing:.08em;text-transform:uppercase}
-.xp.many{border-color:rgba(224,112,138,.4)}
-.gridx{display:grid;grid-template-columns:44px repeat(6,1fr);gap:4px;margin:6px 0 10px}
-.gridx .hd{font-size:9.5px;color:var(--gray);text-align:center;letter-spacing:.06em}
-.gridx .rl{font-size:10px;color:var(--dim);display:flex;align-items:center}
-.gridx .c{height:26px;border-radius:3px;border:1px solid rgba(224,112,138,.35);background:rgba(224,112,138,.08);
-  font-size:10px;color:var(--dim);display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
-.mult{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:10px;border-top:1px solid var(--line)}
-.mult b{font-family:var(--serif);font-size:24px;color:var(--coral);font-weight:700;white-space:nowrap}
-.mult span{font-size:12px;color:var(--dim);line-height:1.35}
-.xp.kphi{border:1px solid rgba(200,168,78,.6);background:linear-gradient(150deg,rgba(200,168,78,.16),rgba(45,212,191,.08))}
-.xp.kphi .cap{color:var(--gold)}
-.xp.kphi ol{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:12px}
-.xp.kphi li{display:flex;gap:10px;font-size:12.5px;color:var(--dim);line-height:1.45}
-.xp.kphi li i{font-style:normal;font-family:var(--serif);color:var(--gold);font-size:18px;line-height:1;flex:none;width:16px}
-.xp.kphi li b{display:block;color:var(--white);font-weight:500;margin-bottom:2px}
-.rule{margin-top:auto;padding:9px 11px;border:1px solid rgba(45,212,191,.4);background:rgba(6,6,14,.5);border-radius:5px;
-  font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:11px;color:var(--teal);line-height:1.5}
-.rule em{font-style:normal;color:var(--gray)}
-#s3b .xp,#s3b .ar,#s3b .gridx .c{opacity:0}
-.slide.on .xp.one{animation:fadein .5s ease .1s both}
-.slide.on .ar.a1{animation:fadein .4s ease .6s both}
-.slide.on .xp.many{animation:fadein .5s ease .7s both}
-.slide.on .gridx .c{animation:fadein .25s ease both}
-.slide.on .ar.a2{animation:fadein .4s ease 2.2s both}
-.slide.on .xp.kphi{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 2.4s both}
+/* 4 accuracy needs granularity */
+#s3b h2{font-size:34px;max-width:40ch}
+.eq{display:flex;align-items:center;gap:14px;margin-top:16px}
+.eq .box{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:10px 16px;min-width:190px}
+.eq .box i{display:block;font-style:normal;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:3px}
+.eq .box b{font-family:var(--serif);font-weight:700;font-size:17px}
+.eq .box.bal{border-color:rgba(45,212,191,.45)} .eq .box.rul{border-color:rgba(224,180,76,.5)}
+.eq .box.out{border-color:rgba(238,238,240,.35)}
+.eq .op{font-family:var(--serif);font-size:24px;color:var(--gray)}
+.eq .say{margin-left:auto;font-size:12.5px;color:var(--dim);max-width:34ch;line-height:1.45}
+.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px;align-items:end}
+.rung{border:1px solid var(--line);border-radius:6px;padding:16px 16px 16px;background:var(--card);position:relative}
+.rung .lv{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray)}
+.rung .n{font-family:var(--serif);font-weight:700;font-size:44px;line-height:1.05;margin:6px 0 8px}
+.rung .of{font-size:12.5px;color:var(--dim);line-height:1.45;min-height:36px}
+.rung .bar{height:6px;border-radius:3px;margin-top:10px;background:rgba(45,212,191,.35);transform-origin:left;width:var(--w)}
+.rung.r4{border-color:rgba(224,112,138,.55);background:rgba(224,112,138,.06)}
+.rung.r4 .n{color:var(--coral)} .rung.r4 .bar{background:rgba(224,112,138,.6)}
+.rung .acc{position:absolute;right:12px;top:12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.rung.r1 .acc{color:var(--coral)} .rung.r4 .acc{color:var(--teal)}
+.verd{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.vp{border-radius:8px;padding:18px 20px;display:flex;gap:16px;align-items:flex-start}
+.vp .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;flex:none;width:96px;padding-top:2px}
+.vp p{font-size:13.5px;color:var(--dim);line-height:1.55}
+.vp p b{color:var(--white);font-weight:500}
+.vp.hand{border:1px dashed rgba(224,112,138,.55);background:rgba(224,112,138,.06)} .vp.hand .cap{color:var(--coral)}
+.vp.kphi{border:1px solid rgba(200,168,78,.6);background:linear-gradient(120deg,rgba(200,168,78,.16),rgba(45,212,191,.08))} .vp.kphi .cap{color:var(--gold)}
+#s3b .eq,#s3b .rung,#s3b .vp{opacity:0}
+.slide.on .eq{animation:fadein .5s ease .1s both}
+.slide.on .rung{animation:fadein .45s ease both}
+.slide.on .rung.r1{animation-delay:.6s}.slide.on .rung.r2{animation-delay:.85s}
+.slide.on .rung.r3{animation-delay:1.1s}.slide.on .rung.r4{animation-delay:1.4s}
+.slide.on .vp.hand{animation:fadein .5s ease 2s both}
+.slide.on .vp.kphi{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 2.4s both}
 
 /* 4 header lanes */
 .s4head{display:flex;align-items:flex-start;gap:44px}
@@ -638,7 +634,7 @@ body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0
 
 #bar{position:absolute;left:0;bottom:0;height:2px;background:var(--gold);transition:width .25s ease}
 a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#s1 .layer,#s3b .xp,#s3b .ar,#s3b .gridx .c,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#s1 .layer,#s3b .eq,#s3b .rung,#s3b .vp,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
 
 :fullscreen{background:var(--bg)}
 :fullscreen #viewport{width:100vw;height:100vh}
@@ -776,30 +772,35 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 
   <!-- 4 -->
   <section class="slide" id="s3b">
-    <div class="eyebrow">One example</div>
-    <h2>One DSO is not a forecast. Three hundred and sixty are a spreadsheet.</h2>
-    <div class="expl">
-      <div class="xp one">
-        <div class="cap">Budget P&amp;L to cash, consolidated</div>
-        <div class="tile"><b>73 days</b><span>one DSO, one rule</span></div>
-        <p>One balance, one delay, applied to everyone. Quick to build — and wrong for every entity and every client at once.</p>
-      </div>
-      <div class="ar a1">→</div>
-      <div class="xp many">
-        <div class="cap">To be accurate, split it</div>
-        <h3>By entity, by business unit, by counterparty</h3>
-        <div class="gridx"><div></div><div class="hd">SALES</div><div class="hd">SERV</div><div class="hd">OPS</div><div class="hd">EXEC</div><div class="hd">RND</div><div class="hd">FIN</div><div class="rl">NTUS</div><div class="c" style="animation-delay:0.90s">79</div><div class="c" style="animation-delay:0.95s">57</div><div class="c" style="animation-delay:1.00s">88</div><div class="c" style="animation-delay:1.05s">44</div><div class="c" style="animation-delay:1.10s">47</div><div class="c" style="animation-delay:1.15s">106</div><div class="rl">NTEU</div><div class="c" style="animation-delay:1.20s">50</div><div class="c" style="animation-delay:1.25s">84</div><div class="c" style="animation-delay:1.30s">112</div><div class="c" style="animation-delay:1.35s">45</div><div class="c" style="animation-delay:1.40s">102</div><div class="c" style="animation-delay:1.45s">65</div><div class="rl">NTUK</div><div class="c" style="animation-delay:1.50s">42</div><div class="c" style="animation-delay:1.55s">49</div><div class="c" style="animation-delay:1.60s">93</div><div class="c" style="animation-delay:1.65s">91</div><div class="c" style="animation-delay:1.70s">46</div><div class="c" style="animation-delay:1.75s">68</div><div class="rl">NTAP</div><div class="c" style="animation-delay:1.80s">49</div><div class="c" style="animation-delay:1.85s">108</div><div class="c" style="animation-delay:1.90s">92</div><div class="c" style="animation-delay:1.95s">45</div><div class="c" style="animation-delay:2.00s">110</div><div class="c" style="animation-delay:2.05s">53</div></div>
-        <div class="mult"><b>× 15</b><span>counterparties on top of the 24 cells above: <b style="font-size:13px;color:var(--white)">360</b> balances to keep and 360 delays to maintain — by hand, every cycle</span></div>
-      </div>
-      <div class="ar a2">→</div>
-      <div class="xp kphi">
-        <div class="cap">Hence K-Φ</div>
-        <ol>
-          <li><i>1</i><div><b>DSO, DPO, DIO measured and segregated</b>per entity, BU and counterparty, from settlement history — sitting there as rule inputs, not typed</div></li>
-          <li><i>2</i><div><b>One rule, applied algorithmically</b>written once, run at whatever grain you choose — the engine does the 360, not the analyst</div></li>
-        </ol>
-        <div class="rule">AR collections · timing <em>=</em> measured DSO<br><em>scope</em> entity × counterparty · <em>aging</em> 30/60/90</div>
-      </div>
+    <div class="eyebrow">One example — receivables</div>
+    <h2>Accuracy needs granularity. Granularity needs an engine.</h2>
+
+    <div class="eq">
+      <div class="box bal"><i>Balance</i><b>Receivables · $ 198.7M</b></div>
+      <div class="op">+</div>
+      <div class="box rul"><i>Rule</i><b>Collected at DSO · 73 days</b></div>
+      <div class="op">=</div>
+      <div class="box out"><i>Result</i><b>Dated collections</b></div>
+      <div class="say">Every P&amp;L-to-cash forecast is this pair: a balance, and a rule for how fast it turns into cash.</div>
+    </div>
+
+    <div class="ladder">
+      <div class="rung r1"><span class="acc">inaccurate</span><div class="lv">Consolidated</div><div class="n">1</div>
+        <div class="of">one balance, one DSO — the group average, true of nobody</div><div class="bar" style="--w:8%"></div></div>
+      <div class="rung r2"><div class="lv">By entity</div><div class="n">4</div>
+        <div class="of">US, EU, UK, APAC each pay on their own terms</div><div class="bar" style="--w:22%"></div></div>
+      <div class="rung r3"><div class="lv">× business unit</div><div class="n">24</div>
+        <div class="of">product sales and service contracts do not collect alike</div><div class="bar" style="--w:48%"></div></div>
+      <div class="rung r4"><span class="acc">accurate</span><div class="lv">× counterparty</div><div class="n">360</div>
+        <div class="of">15 clients, each with its own history — this is where the forecast is right</div><div class="bar" style="--w:100%"></div></div>
+    </div>
+
+    <div class="verd">
+      <div class="vp hand"><div class="cap">In a workbook</div>
+        <p><b>360 balances to source, 360 DSOs to estimate, 360 rules to maintain</b> — every cycle. So nobody does it, and the forecast stays at the left of the ladder.</p></div>
+      <div class="vp kphi"><div class="cap">In K-Φ</div>
+        <p><b>1 · The 360 DSOs are measured, not typed</b> — per entity, BU and counterparty, from settlement history, ready as rule inputs.<br>
+           <b>2 · One rule, written once</b> — applied algorithmically at the grain you choose. The engine does the 360.</p></div>
     </div>
     <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">04 / 8</div></div>
   </section>
