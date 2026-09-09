@@ -1052,8 +1052,14 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       host.appendChild(b);
     }
   });
-  var version=14;
+  var version=14,VERSION_BASE=14;
+  /* the clocks only tick while the horizon slide is on screen — otherwise
+     the version badge counts every five seconds the deck stays open and
+     reads "v550" by the time the audience sees it */
+  function _liveSlide(){var el=document.getElementById("z-g");return !!(el&&el.closest(".slide")&&el.closest(".slide").classList.contains("on"));}
+  window._kphiResetVersion=function(){version=VERSION_BASE;var v=document.getElementById("ver");if(v)v.textContent="v"+version;};
   function refresh(k){
+    if(!_liveSlide())return;
     var z=Z[k],bars=document.getElementById("z-"+k).children,
         dot=document.getElementById("dot-"+k);
     dot.classList.add("lit");setTimeout(function(){dot.classList.remove("lit")},420);
@@ -1103,6 +1109,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     location.hash=i+1;
     var v=slides[i].querySelector(".bgvideo");
     if(v){try{v.currentTime=0;v.play().catch(function(){})}catch(e){}}
+    if(slides[i].querySelector("#z-g")&&window._kphiResetVersion)window._kphiResetVersion();
     setTimeout(function(){
       slides.forEach(function(s){s.classList.remove("above");s.style.transform="";s.style.opacity="";s.style.filter=""});
       transitioning=false;
