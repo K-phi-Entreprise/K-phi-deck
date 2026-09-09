@@ -871,13 +871,13 @@ html:fullscreen,body:fullscreen{overflow:hidden}
   <text x="0" y="114" font-size="9.5" fill="var(--teal)">what AR/AP forecasting sees · ~half</text>
 </svg>
         <p>AR and AP are two subledgers. <b>Payroll, tax, debt service, capex, intercompany</b> — the flows that decide the quarter — are in the ledger and nowhere else.</p></div>
-      <div class="sc"><div class="n">2</div><h3>Past sixty days.</h3>
+      <div class="sc"><div class="n">2</div><h3>Past the invoices it holds.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
   <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">HOW FAR IT SEES</text>
-  <text x="0" y="40" font-size="9.5" fill="var(--teal)">AR/AP · invoices already issued</text>
+  <text x="0" y="40" font-size="9.5" fill="var(--teal)">AR/AP · run-off of the invoices it holds</text>
   <rect class="seg" x="0" y="44" width="80" height="12" rx="2" fill="rgba(45,212,191,.85)" style="animation-delay:1.05s"/>
-  <text x="86" y="54" font-size="9" fill="var(--gray)">→ nothing left to age</text>
-  <text x="0" y="76" font-size="9.5" fill="var(--gold)">Ledger run-off, then budget</text>
+  <text x="86" y="54" font-size="9" fill="var(--gray)">→ nothing generates the next one</text>
+  <text x="0" y="76" font-size="9.5" fill="var(--gold)">Ledger run-off + revenue run-rate, then budget</text>
   <rect class="seg" x="0" y="80" width="220" height="12" rx="2" fill="rgba(45,212,191,.6)" style="animation-delay:1.25s"/>
   <rect class="seg" x="220" y="80" width="140" height="12" rx="2" fill="rgba(200,168,78,.6)" style="animation-delay:1.45s"/>
   <line class="draw" x1="0" y1="104" x2="360" y2="104" stroke="rgba(154,164,180,.4)" stroke-width="1"/>
@@ -886,7 +886,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
   <text x="220" y="116" font-size="9" fill="var(--gray)" text-anchor="middle">week 13</text>
   <text x="360" y="116" font-size="9" fill="var(--gray)" text-anchor="end">+ 3 quarters</text>
 </svg>
-        <p>An invoice not yet issued does not exist in AR. <b>Sixty days out there is nothing left to age</b> — and no handoff to a plan. The ledger runs off to week 13 and the budget carries it from there.</p></div>
+        <p>Both methods hold the same invoices. AR can only <b>run them off</b>: once the last one is collected, around sixty days, the curve is at zero — it has no way to generate next week's invoice. The ledger's revenue run-rate <b>projects</b> the next ones through the measured DSO, and the budget takes over when the run-rate fades.</p></div>
       <div class="sc"><div class="n">3</div><h3>When the cash lands.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
   <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHEN THE CASH ACTUALLY LANDS</text>
