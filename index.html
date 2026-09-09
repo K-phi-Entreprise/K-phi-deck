@@ -218,6 +218,22 @@ h2{font-size:40px;max-width:27ch}
 .slide.on .half.no{animation:fadein .5s ease .2s both}
 .slide.on .half.yes{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 1.4s both}
 
+/* curves draw themselves, then breathe */
+.half svg polyline{stroke-dasharray:1400;stroke-dashoffset:1400}
+.slide.on .half.no svg polyline{animation:drawc 1.6s cubic-bezier(.4,0,.2,1) .7s forwards,swell 6s ease-in-out 2.4s infinite}
+.slide.on .half.yes svg polyline{animation:drawc 1.2s cubic-bezier(.4,0,.2,1) forwards,swell 6s ease-in-out infinite}
+.slide.on .half.yes svg polyline:nth-of-type(1){animation-delay:2.2s,3.6s}
+.slide.on .half.yes svg polyline:nth-of-type(2){animation-delay:2.4s,3.9s}
+.slide.on .half.yes svg polyline:nth-of-type(3){animation-delay:2.6s,4.2s}
+.slide.on .half.yes svg polyline:nth-of-type(4){animation-delay:2.8s,4.5s}
+.slide.on .half.yes svg polyline:nth-of-type(5){animation-delay:3.0s,4.8s}
+.half svg text{opacity:0}
+.slide.on .half.no svg text{animation:fadein .5s ease 2.2s both}
+.slide.on .half.yes svg text{animation:fadein .5s ease 3.3s both}
+@keyframes drawc{to{stroke-dashoffset:0}}
+@keyframes swell{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.06)}}
+.half svg polyline{transform-origin:50% 88px}
+
 /* 4 header lanes */
 .s4head{display:flex;align-items:flex-start;gap:44px}
 .s4head h2{flex:1;max-width:24ch;font-size:35px;margin-top:-2px}
@@ -625,7 +641,7 @@ body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0
 
 #bar{position:absolute;left:0;bottom:0;height:2px;background:var(--gold);transition:width .25s ease}
 a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
+@media (prefers-reduced-motion:reduce){.half svg polyline{stroke-dashoffset:0}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
 
 :fullscreen{background:var(--bg)}
 :fullscreen #viewport{width:100vw;height:100vh}
