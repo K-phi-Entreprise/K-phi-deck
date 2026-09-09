@@ -893,20 +893,29 @@ html:fullscreen,body:fullscreen{overflow:hidden}
   <text x="200" y="112" font-size="9" fill="var(--gray)">covenants, exposures, variance — read from here</text>
 </svg>
         <p>Extrapolate all you like — an AR/AP forecast still only produces <b>cash movements</b>. Extrapolating from the ledger produces <b>projected statements</b>: a receivables balance at end-November, a debt, a cash position. Covenants, hedge exposures and the comparison to budget are read from a balance sheet, not from a list.</p></div>
-      <div class="sc"><div class="n">3</div><h3>When the cash lands.</h3>
+      <div class="sc"><div class="n">3</div><h3>FX exposure.</h3>
         <svg viewBox="0 0 360 118" xmlns="http://www.w3.org/2000/svg">
-  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHEN THE CASH ACTUALLY LANDS</text>
-  <line x1="90" y1="24" x2="90" y2="100" stroke="var(--teal)" stroke-width="1.5" stroke-dasharray="4 3"/>
-  <text x="90" y="34" font-size="9.5" fill="var(--teal)" text-anchor="middle">due date · 30 days</text>
-  <polyline class="draw" points="0,100.0 3,100.0 6,100.0 9,100.0 12,100.0 15,100.0 18,100.0 21,100.0 24,100.0 27,100.0 30,100.0 33,100.0 36,100.0 39,100.0 42,100.0 45,100.0 48,100.0 51,100.0 54,100.0 57,100.0 60,100.0 63,100.0 66,100.0 69,100.0 72,100.0 75,100.0 78,100.0 81,100.0 84,100.0 87,100.0 90,100.0 93,99.9 96,99.9 99,99.9 102,99.8 105,99.8 108,99.7 111,99.6 114,99.5 117,99.3 120,99.1 123,98.9 126,98.5 129,98.2 132,97.7 135,97.1 138,96.4 141,95.6 144,94.6 147,93.5 150,92.1 153,90.6 156,88.9 159,87.0 162,84.9 165,82.5 168,80.0 171,77.2 174,74.3 177,71.2 180,68.0 183,64.7 186,61.4 189,58.0 192,54.8 195,51.7 198,48.8 201,46.1 204,43.8 207,41.8 210,40.1 213,39.0 216,38.2 219,38.0 222,38.2 225,39.0 228,40.1 231,41.8 234,43.8 237,46.1 240,48.8 243,51.7 246,54.8 249,58.0 252,61.4 255,64.7 258,68.0 261,71.2 264,74.3 267,77.2 270,80.0 273,82.5 276,84.9 279,87.0 282,88.9 285,90.6 288,92.1 291,93.5 294,94.6 297,95.6 300,96.4 303,97.1 306,97.7 309,98.2 312,98.5 315,98.9 318,99.1 321,99.3 324,99.5 327,99.6 330,99.7 333,99.8 336,99.8 339,99.9 342,99.9 345,99.9 348,100.0 351,100.0 354,100.0 357,100.0 360,100.0" fill="rgba(200,168,78,.12)" stroke="var(--gold)" stroke-width="1.8"/>
-  <text x="219" y="34" font-size="9.5" fill="var(--gold)" text-anchor="middle">measured · 73 days</text>
-  <line x1="0" y1="100" x2="360" y2="100" stroke="rgba(154,164,180,.4)"/>
-  <text x="0" y="114" font-size="9" fill="var(--gray)">day 0</text>
-  <text x="360" y="114" font-size="9" fill="var(--gray)" text-anchor="end">day 120</text>
+  <text x="0" y="14" font-size="10" fill="var(--gray)" letter-spacing="1">WHERE THE FX EXPOSURE COMES FROM</text>
+  <text x="0" y="36" font-size="9.5" fill="var(--dim)">Balance-sheet hedge · positions</text>
+  <g class="seg" style="animation-delay:1.6s">
+    <rect x="0" y="42" width="90" height="14" rx="2" fill="rgba(45,212,191,.85)"/>
+    <rect x="94" y="42" width="120" height="14" rx="2" fill="rgba(200,168,78,.55)"/>
+    <rect x="218" y="42" width="142" height="14" rx="2" fill="rgba(200,168,78,.55)"/>
+  </g>
+  <text x="45" y="66" font-size="8.5" fill="var(--teal)" text-anchor="middle">trade AR/AP</text>
+  <text x="154" y="66" font-size="8.5" fill="var(--gray)" text-anchor="middle">IC loans</text>
+  <text x="289" y="66" font-size="8.5" fill="var(--gray)" text-anchor="middle">debt in FX</text>
+  <text x="0" y="84" font-size="9.5" fill="var(--dim)">Cash-flow hedge · forecast flows</text>
+  <g class="seg" style="animation-delay:1.85s">
+    <rect x="0" y="90" width="52" height="14" rx="2" fill="rgba(45,212,191,.85)"/>
+    <rect x="56" y="90" width="304" height="14" rx="2" fill="rgba(200,168,78,.55)"/>
+  </g>
+  <text x="26" y="114" font-size="8.5" fill="var(--teal)" text-anchor="middle">invoices held</text>
+  <text x="208" y="114" font-size="8.5" fill="var(--gray)" text-anchor="middle">projected revenue &amp; costs by currency, from the ledger run-rate and the budget</text>
 </svg>
-        <p>A due date is what was agreed. <b>A 3-month DSO on a segmented perimeter</b> — entity, BU, counterparty — is what actually happens. Measured, not declared.</p></div>
+        <p>Hedging needs exposures by currency — <b>positions</b> for a balance-sheet hedge, <b>forecast flows</b> for a cash-flow hedge. AR/AP holds the trade slice of the first and almost none of the second. The indirect method is the enabler: it projects both, per entity, in the currencies they are booked in.</p></div>
     </div>
-    <div class="ledger-line">And because the ledger forecast is written in the same lines as the budget, <b>the budget can take it over month by month, and every close cuts a version</b> — a list of due dates has no such anchor and no such handoff.</div>
+    <div class="ledger-line">On the dates themselves: an invoice's due date is a promise. <b>A 3-month DSO on a segmented perimeter — entity, BU, counterparty — is what actually happens</b>, measured rather than declared. And because the ledger forecast is written in the budget's own lines, the budget takes it over month by month and every close cuts a version.</div>
     <div class="chrome"><div class="sections"><span class="here">The problem</span><span>The solution</span></div><div class="count">05 / 9</div></div>
   </section>
 
