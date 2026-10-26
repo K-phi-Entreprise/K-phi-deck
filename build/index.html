@@ -452,8 +452,67 @@ html:fullscreen,body:fullscreen{overflow:hidden}
 #s10 .cta small{display:block;font-size:13px;color:var(--gray);margin-top:10px}
 #s10 .cta small a{border-bottom-color:rgba(200,168,78,.25)}
 
+/* map slide */
+#sm h2{font-size:34px;max-width:none}
+.mapgrid{display:grid;grid-template-columns:1fr 390px;gap:34px;margin-top:18px;flex:1;align-items:stretch}
+.map2{position:relative;display:grid;grid-template-columns:120px 1fr 1fr;grid-template-rows:34px 1fr 1fr;gap:0}
+.map2 .ax{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.3}
+.map2 .ax.top{padding-bottom:6px}
+.map2 .ax.left{writing-mode:vertical-rl;transform:rotate(180deg);padding-left:8px;justify-self:center}
+.map2 .q{border:1px solid var(--line);background:var(--card);padding:16px 18px;display:flex;flex-direction:column;min-height:150px}
+.map2 .q b{font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.2;margin-bottom:6px}
+.map2 .q span{font-size:12.5px;color:var(--gray);line-height:1.45}
+.map2 .q i{font-style:normal;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
+.map2 .q.us{border-color:rgba(200,168,78,.7);background:linear-gradient(150deg,rgba(200,168,78,.2),rgba(45,212,191,.08))}
+.map2 .q.us i{color:var(--gold)} .map2 .q.us span{color:var(--dim)}
+.map2 .q b .phi{color:var(--gold);font-size:inherit;line-height:inherit}
+.map2 .q.empty span{color:var(--gray)}
+.map2 .q.empty{background:repeating-linear-gradient(135deg,rgba(238,238,240,.03) 0 2px,transparent 2px 9px)}
+.mapnote{display:flex;flex-direction:column;gap:14px}
+.mapnote .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal)}
+.mapnote h3{font-family:var(--serif);font-weight:700;font-size:21px;line-height:1.2}
+.mapnote p{font-size:13px;color:var(--dim);line-height:1.5}
+.mapnote p b{color:var(--white);font-weight:500}
+.mapnote .post{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px 14px;font-size:12.5px;color:var(--gray);line-height:1.5}
+.mapnote .post b{display:block;color:var(--white);font-weight:500;margin-bottom:4px}
+.mapnote .post em{font-style:normal;color:var(--gold)}
+.mapnote .kick{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;font-size:13px;color:var(--dim);line-height:1.45}
+.mapnote .kick b{color:var(--gold);font-weight:500}
+#sm .map2 .q,#sm .mapnote{opacity:0}
+.slide#sm.on .map2 .q{animation:fadein .45s ease both}
+.slide#sm.on .map2 .q:nth-of-type(1){animation-delay:.2s}.slide#sm.on .map2 .q:nth-of-type(2){animation-delay:.45s}
+.slide#sm.on .map2 .q:nth-of-type(3){animation-delay:.7s}
+.slide#sm.on .map2 .q.us{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 1.1s both}
+.slide#sm.on .mapnote{animation:fadein .5s ease 1.8s both}
+
+/* marketplaces slide */
+#smk h2{font-size:34px;max-width:none}
+.mkt{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:26px}
+.mk{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column}
+.mk .st{display:inline-block;align-self:flex-start;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:12px;border:1px solid;margin-bottom:10px}
+.mk .st.live{color:var(--teal);border-color:rgba(45,212,191,.5)} .mk .st.rev{color:var(--gold);border-color:rgba(200,168,78,.5)}
+.mk h3{font-family:var(--serif);font-weight:700;font-size:21px;line-height:1.2;margin-bottom:4px}
+.mk .sub{font-size:12px;color:var(--gray);margin-bottom:12px}
+.mk ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.mk li{font-size:12.5px;color:var(--dim);line-height:1.45;padding-left:14px;position:relative}
+.mk li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--teal)}
+.mk li b{color:var(--white);font-weight:500}
+.mk .then{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);font-size:12px;color:var(--gray);line-height:1.4}
+.mk .then b{color:var(--gold);font-weight:500}
+.funnel3{display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr;align-items:center;margin-top:22px}
+.funnel3 .f{border:1px solid rgba(200,168,78,.4);border-radius:6px;padding:11px 14px;background:rgba(200,168,78,.06)}
+.funnel3 .f i{font-style:normal;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:3px}
+.funnel3 .f b{font-family:var(--serif);font-weight:700;font-size:15px;display:block;line-height:1.25;margin-bottom:2px}
+.funnel3 .f span{font-size:11.5px;color:var(--gray);line-height:1.35}
+.funnel3 .ar{text-align:center;color:rgba(200,168,78,.7);font-size:16px}
+#smk .foot{margin-top:14px}
+#smk .mk,#smk .funnel3{opacity:0}
+.slide#smk.on .mk{animation:fadein .5s ease both}
+.slide#smk.on .mk:nth-child(1){animation-delay:.15s}.slide#smk.on .mk:nth-child(2){animation-delay:.5s}
+.slide#smk.on .funnel3{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 1.1s both}
+
 @media (prefers-reduced-motion:reduce){.sc svg .draw{stroke-dashoffset:0}*{transition:none!important;animation:none!important}
- #s1 .layer,#s2 .route .box,#s2 .route .ar,#s2 .route .end,#s2 .demand,#s2 .sowhat,#s3 .sc,#s3 .ledger-line,#s4 .envbox,#s4 .usecase,#s5 .wstep,#s5 .copilot,#s5 .pass,#s5 .token,.wb .ministack .ml,.wb .wb-body,.wb .mlink{opacity:1}}
+ #s1 .layer,#s2 .route .box,#s2 .route .ar,#s2 .route .end,#s2 .demand,#s2 .sowhat,#s3 .sc,#s3 .ledger-line,#s4 .envbox,#s4 .usecase,#s5 .wstep,#s5 .copilot,#s5 .pass,#s5 .token,.wb .ministack .ml,.wb .wb-body,.wb .mlink,#sm .map2 .q,#sm .mapnote,#smk .mk,#smk .funnel3{opacity:1}}
 </style>
 </head>
 <body>
@@ -492,7 +551,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         </div></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The build</span><span>The layers</span></div><div class="count">01 / 9</div></div>
+    <div class="chrome"><div class="sections"><span>The build</span><span>The layers</span></div><div class="count">01 / 11</div></div>
   </section>
 
   <!-- 2 -->
@@ -519,7 +578,34 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       <div class="lb">So what</div>
       <p>Building got cheap. <b>Landing the result where treasury and FP&amp;A actually read it did not.</b> The harness is not the problem. The destination is.</p>
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">02 / 9</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">02 / 11</div></div>
+  </section>
+
+  <!-- map -->
+  <section class="slide" id="sm">
+    <div class="eyebrow">Where we sit</div>
+    <h2>Under the word "agentic": who writes the logic, and where it lands.</h2>
+    <div class="mapgrid">
+      <div class="map2">
+        <div></div>
+        <div class="ax top">Beside the systems</div>
+        <div class="ax top">Inside the system of record</div>
+        <div class="ax left">The vendor builds</div>
+        <div class="q empty"><i>Chat over exports</i><b>Generic copilots</b><span>Good answers on a file you exported. Nothing written back. What most people picture when they hear "agentic".</span></div>
+        <div class="q"><i>Vendor agents</i><b>Embat · Bond</b><span>The vendor's agents run your treasury inside the vendor's platform. Their logic, their roadmap, their data model.</span></div>
+        <div class="ax left">Your team builds</div>
+        <div class="q"><i>Finance engineers</i><b>Concourse</b><span>Your team assembles agents and workflows that read ERP, warehouse and bank data through APIs. Your logic, running beside the systems.</span></div>
+        <div class="q us"><i>The minnow on this map</i><b>K-<span class="phi">Φ</span></b><span>Your team builds, and the result is written into the forecast, the scenarios, the cash worksheet. Your logic, inside, administered.</span></div>
+      </div>
+      <div class="mapnote">
+        <div class="cap">The post that travelled</div>
+        <h3>Two questions, four boxes, one bet per box.</h3>
+        <p>All four are real progress over the Monday workbook. They are not the same bet. The vendors say their agents will do treasury for you; Concourse and K-Φ say the treasurer will build it. <b>Between those two, the only difference is whether what gets built lands in the TMS or next to it.</b></p>
+        <div class="post"><b>As posted on LinkedIn</b>"If your treasurer had to sign one of the four boxes, which one?" <em>The map went out from a person, not the page: from a vendor it is an ad, from a person it is an opinion.</em></div>
+        <div class="kick">The bottom-right box is a position nobody else is defending: <b>customer-built, inside, versioned like a close.</b></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">03 / 11</div></div>
   </section>
 
   <!-- 3 -->
@@ -585,7 +671,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
       </div>
     </div>
     <div class="ledger-line">The demand is real and the tooling is good. <b>What is missing is a destination: an environment where a build becomes part of the data everyone else already works from.</b></div>
-    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">03 / 9</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">04 / 11</div></div>
   </section>
 
   <!-- 4 -->
@@ -621,7 +707,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         <div class="million">A hedge fund's capital calls, a franchisor's royalty timing, a shipper's fuel hedge, a PE fund's portfolio liquidity: <b>the pattern is the same, the logic is yours.</b></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">04 / 9</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">05 / 11</div></div>
   </section>
 
   <!-- 5 -->
@@ -651,7 +737,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
               <li>Push a change live without the confirmation step</li></ul></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">05 / 9</div></div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">06 / 11</div></div>
   </section>
 
   <!-- 6 -->
@@ -685,7 +771,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         <div class="wb-kick">The extension is not a second forecast. <b>It is extra flows on the one forecast treasury already reads.</b></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">06 / 9</div></div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">07 / 11</div></div>
   </section>
 
   <!-- 7 -->
@@ -719,7 +805,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         <div class="wb-kick">This is why a build on K-Φ is accurate without extra work: <b>the granularity is already measured and sitting there as rule inputs.</b></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">07 / 9</div></div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">08 / 11</div></div>
   </section>
 
   <!-- 8 -->
@@ -753,7 +839,36 @@ html:fullscreen,body:fullscreen{overflow:hidden}
         <div class="wb-kick">Everything above sits on this. <b>Start the ledger deck here if the audience is a controller rather than a builder.</b></div>
       </div>
     </div>
-    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">08 / 9</div></div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">09 / 11</div></div>
+  </section>
+
+  <!-- marketplaces -->
+  <section class="slide" id="smk">
+    <div class="eyebrow">How you get in</div>
+    <h2>Two marketplaces, one account, one pass.</h2>
+    <div class="mkt">
+      <div class="mk"><span class="st live">Live · claude.ai/directory/k-phi</span>
+        <h3>Claude directory</h3><div class="sub">Anthropic's connector directory, listed under K-phi Enterprise Kft</div>
+        <ul><li><b>Discovery in one chat</b>: drop a general ledger on the link Claude gives you; statements, 30 KPIs, covenant status and a per-entity forecast come back inline, with the report link.</li>
+            <li><b>The private MCP behind the account</b>: 17 read-and-write tools, OAuth with 2FA, names pseudonymised before anything reaches the model. Claude is the app; there is no mobile app to install.</li>
+            <li><b>Two regional deployments</b>, Germany and Oregon, so the data stays on the right side of the ocean.</li></ul>
+        <div class="then">Then: <b>claim the sandbox, paste the builder pass</b>, keep going in the same chat.</div></div>
+      <div class="mk"><span class="st rev">In Intuit's review</span>
+        <h3>QuickBooks App Store</h3><div class="sub">Sign in with Intuit, US · UK · CA · AU cards</div>
+        <ul><li><b>Connect QuickBooks in one click</b>: the ledger, the invoices and bills flow in; statements, measured DSO and DPO, dated cash forecast stand in minutes.</li>
+            <li><b>Technical review passed</b>; the independent security review (staging scanned, 29-item questionnaire) is the last gate before the listing goes public.</li>
+            <li><b>Xero next</b>, same model: the ERP marketplace opens the door, the ledger does the rest.</li></ul>
+        <div class="then">Then: <b>the GL is already in, the pass builds on it</b>, not on a CSV somebody exported.</div></div>
+    </div>
+    <div class="funnel3">
+      <div class="f"><i>1 · marketplace</i><b>Try it where you already are</b><span>Claude, or the QuickBooks you use every day</span></div>
+      <div class="ar">→</div>
+      <div class="f"><i>2 · account</i><b>Your data, administered</b><span>tenant, rights, audit trail, versions, from the first import</span></div>
+      <div class="ar">→</div>
+      <div class="f"><i>3 · builder pass</i><b>Build your own model on it</b><span>one pass per account, as many iterations as you need</span></div>
+    </div>
+    <p class="foot">Intuit and QuickBooks are registered trademarks of Intuit Inc. Claude is a trademark of Anthropic, PBC. Xero is a trademark of Xero Limited. K-Φ is an independent product of K-phi Enterprise Kft.</p>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">10 / 11</div></div>
   </section>
 
   <!-- 9 -->
@@ -768,7 +883,7 @@ html:fullscreen,body:fullscreen{overflow:hidden}
     </div>
     <p class="cta">Five builder passes are open: one use case each, built with you in the chat. <a href="https://k-phi.com">k-phi.com</a>
       <small>Want the data layers first? <a href="../">Start at the ledger</a>, the companion deck.</small></p>
-    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">09 / 9</div></div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">11 / 11</div></div>
   </section>
 
   <div id="modeRipple"></div>
