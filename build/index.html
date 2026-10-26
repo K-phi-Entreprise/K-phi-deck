@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K-Φ — Build on the system of record</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060e; --card:#0c0c1a; --gold:#c8a84e; --teal:#2dd4bf;
+  --white:#eeeef0; --gray:#9aa4b4; --line:#1e1e33; --coral:#e0708a;
+  --dim:#d3d8e2;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--white);font-family:var(--sans);
+     -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
+     overflow:hidden;display:flex;align-items:center;justify-content:center}
+#viewport{position:relative;width:100vw;height:100vh;overflow:hidden}
+#stage{position:absolute;top:50%;left:50%;width:1280px;height:720px;
+       transform-origin:center center;background:var(--bg)}
+
+.slide{position:absolute;inset:0;padding:58px 76px 70px;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateY(100%) scale(0.95);filter:blur(4px);
+  transition:transform .7s cubic-bezier(.4,0,.2,1),opacity .7s cubic-bezier(.4,0,.2,1),filter .7s}
+.slide.on{opacity:1;pointer-events:all;transform:translateY(0) scale(1);filter:blur(0)}
+.slide.above{opacity:0;transform:translateY(-30%) scale(0.9);filter:blur(6px);pointer-events:none}
+h1,h2{font-family:var(--serif);font-weight:700;line-height:1.12;letter-spacing:-.005em}
+h2{font-size:40px;max-width:27ch}
+.eyebrow{color:var(--gold);font-size:11.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:13px}
+.lede{font-size:17px;color:var(--dim);max-width:66ch;margin-top:16px;line-height:1.55}
+
+.chrome{position:absolute;left:76px;right:76px;bottom:30px;display:flex;align-items:center;
+        gap:16px;font-size:11.5px;color:var(--gray);letter-spacing:.03em}
+.chrome .sections{display:flex;gap:20px}
+.chrome .sections span{opacity:.42}
+.chrome .sections span.here{opacity:1;color:var(--white)}
+.chrome .sections span.here::before{content:"";display:inline-block;width:13px;height:1px;
+        background:var(--gold);vertical-align:middle;margin-right:8px}
+.chrome .count{margin-left:auto}
+
+.mark{font-family:var(--serif);font-weight:700;letter-spacing:-.02em;line-height:1}
+.mark .phi{color:var(--gold)}
+
+/* generic */
+.cols{display:grid;gap:30px;margin-top:30px;flex:1}
+.c2{grid-template-columns:1fr 1fr}
+.c3{grid-template-columns:repeat(3,1fr)}
+.item h3{font-family:var(--serif);font-size:21px;font-weight:700;margin-bottom:9px;line-height:1.25}
+.item p{font-size:14.5px;color:var(--gray);line-height:1.55;max-width:40ch}
+.numbered{display:flex;gap:14px}
+.numbered .n{font-family:var(--serif);font-size:19px;color:var(--gold);flex:none;width:20px;line-height:1.4}
+
+/* ── aurora borealis ─────────────────────────────────────────── */
+.aurora{position:absolute;left:0;right:0;top:-26px;height:150px;overflow:hidden;pointer-events:none;
+  z-index:0;mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.75) 34%,transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.75) 34%,transparent 100%)}
+.aurora svg{width:1680px;height:150px;display:block}
+@keyframes drift{to{transform:translateX(-320px)}}
+.rib.r0{stroke-width:9;opacity:0.58;filter:blur(15px);animation:drift 26s linear infinite normal}
+.rib.r1{stroke-width:10;opacity:0.52;filter:blur(17px);animation:drift 34s linear infinite reverse}
+.rib.r2{stroke-width:11;opacity:0.42;filter:blur(20px);animation:drift 41s linear infinite normal}
+.rib.r3{stroke-width:8;opacity:0.3;filter:blur(18px);animation:drift 49s linear infinite reverse}
+.slide{z-index:1}
+/* title-slide logo: aurora running through the wordmark */
+@keyframes auroraflow{
+  0%{background-position:0% 0}
+  13%{background-position:100% 0}
+  100%{background-position:100% 0}}
+.aurora-mark{position:relative;display:inline-block;
+  background:linear-gradient(100deg,#c5b358 0%,#c5b358 28%,#36d6a0 40%,#8fe8d0 46%,#534ab7 53%,#e6007e 61%,#c5b358 72%,#c5b358 100%);
+  background-size:320% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:auroraflow 10s cubic-bezier(.45,0,.35,1) infinite}
+.aurora-mark .phi{color:transparent}
+.aurora-mark::before{content:"K-Φ";position:absolute;left:0;top:0;filter:blur(15px);opacity:.45;
+  background:inherit;background-size:300% 100%;-webkit-background-clip:text;background-clip:text;
+  color:transparent;animation:auroraflow 10s cubic-bezier(.45,0,.35,1) infinite;z-index:-1}
+#s1 .edge{background:linear-gradient(180deg,rgba(45,212,191,.08),rgba(200,168,78,.07) 55%,transparent)}
+/* 5 three shortcomings of AR/AP forecasting */
+#s3c h2{font-size:34px;max-width:none}
+.short{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.sc{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:16px 18px 14px;display:flex;flex-direction:column}
+.sc .n{font-family:var(--serif);font-size:22px;color:var(--coral);line-height:1;margin-bottom:8px}
+.sc h3{font-family:var(--serif);font-weight:700;font-size:19px;line-height:1.2;margin-bottom:10px}
+.sc svg{width:100%;height:auto;display:block;margin-bottom:14px}
+.sc p{font-size:13px;color:var(--dim);line-height:1.55;margin-top:4px}
+.sc p b{color:var(--white);font-weight:500}
+.sc .lg{display:flex;gap:14px;font-size:10.5px;color:var(--gray);margin-bottom:6px}
+.sc .lg i{display:inline-block;width:10px;height:8px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.ledger-line{margin-top:26px;border-left:3px solid var(--gold);padding:8px 0 8px 14px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.ledger-line b{color:var(--white);font-weight:500}
+#s3c .sc,#s3c .ledger-line{opacity:0}
+.slide.on .sc{animation:fadein .5s ease both}
+.slide.on .sc:nth-child(1){animation-delay:.15s}.slide.on .sc:nth-child(2){animation-delay:.7s}.slide.on .sc:nth-child(3){animation-delay:1.25s}
+.slide.on .ledger-line{animation:fadein .5s ease 2s both}
+.sc svg .draw{stroke-dasharray:900;stroke-dashoffset:900}
+.slide.on .sc:nth-child(1) svg .draw{animation:drawc 1.1s ease .5s forwards}
+.slide.on .sc:nth-child(2) svg .draw{animation:drawc 1.1s ease 1.05s forwards}
+.slide.on .sc:nth-child(3) svg .draw{animation:drawc 1.1s ease 1.6s forwards}
+.sc svg .seg{transform-origin:left;transform:scaleX(0)}
+.slide.on .sc svg .seg{animation:growx .5s ease forwards}
+@keyframes growx{to{transform:scaleX(1)}}
+@keyframes sweep{from{clip-path:inset(0 100% 0 0);opacity:.2}to{clip-path:inset(0 0 0 0);opacity:1}}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* 9 stack */
+.stack{margin-top:24px;flex:1;display:flex;flex-direction:column;justify-content:center}
+.layers{position:relative;display:flex;flex-direction:column;gap:8px}
+.layer{display:grid;grid-template-columns:160px 1fr 300px;align-items:center;gap:22px;
+  border:1px solid var(--line);background:var(--card);padding:14px 20px}
+.layer .owner{font-size:12px;color:var(--gray)}
+.layer .name{font-family:var(--serif);font-size:20px;font-weight:700}
+.layer .note{font-size:13px;color:var(--gray);text-align:right;line-height:1.4}
+.layer.us{border-color:rgba(200,168,78,.5);
+  background:linear-gradient(90deg,rgba(200,168,78,.14),rgba(45,212,191,.06));padding:20px}
+.layer.us .name{font-size:28px}
+.layer.us .note,.layer.us .owner{color:var(--dim)}
+.layer.ghost{border-style:dashed;background:none;opacity:.55}
+.layer.ghost .name{text-decoration:line-through;text-decoration-thickness:1px;color:var(--coral)}
+
+/* 9 io */
+.io{display:grid;grid-template-columns:1fr 1fr;margin-top:28px;flex:1}
+.io > div{padding:24px 28px;border:1px solid var(--line);background:var(--card)}
+.io > div + div{border-left:none}
+.io h3{font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:16px}
+.io ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.io li{font-size:14.5px;line-height:1.45}
+.io li b{font-weight:500;display:block;margin-bottom:3px}
+.io li span{color:var(--gray);font-size:13.5px}
+.foot{font-size:11px;color:var(--gray);margin-top:16px;line-height:1.5}
+/* 6 time to value */
+.ttv{margin-top:14px}
+.ttv .lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin:18px 0 10px}
+.ttv .lab b{color:var(--gold);font-weight:500;letter-spacing:.06em;text-transform:none;font-size:12px;margin-left:10px}
+.wiz{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch}
+.wstep{position:relative;border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px 14px;margin-right:22px}
+.wstep:last-child{margin-right:0}
+.wstep::after{content:"";position:absolute;right:-22px;top:50%;width:22px;height:1px;
+  background:repeating-linear-gradient(90deg,rgba(154,164,180,.5) 0 4px,transparent 4px 8px)}
+.wstep:last-child::after{display:none}
+.wstep i{display:block;font-style:normal;font-size:10.5px;letter-spacing:.1em;margin-bottom:5px}
+.wstep i.tw{color:var(--teal)} .wstep i.tc{color:var(--gold)}
+.wstep b{display:block;font-family:var(--serif);font-weight:700;font-size:14.5px;line-height:1.25;margin-bottom:4px}
+.wstep span{font-size:11px;color:var(--gray);line-height:1.35}
+.wstep.auto{border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.06)}
+.wstep:has(i.tc){border-color:rgba(200,168,78,.45);background:rgba(200,168,78,.07)}
+.copilot{margin-top:12px;border:1px solid rgba(45,212,191,.35);border-radius:6px;padding:10px 16px;
+  background:linear-gradient(90deg,rgba(45,212,191,.10),transparent 80%);display:flex;gap:18px;align-items:baseline;font-size:12.5px;color:var(--dim)}
+.copilot b{font-family:var(--serif);font-weight:700;font-size:14px;flex:none;color:var(--white)}
+.offer{display:grid;grid-template-columns:200px 1fr;gap:26px;align-items:center;
+  border:1px solid rgba(200,168,78,.5);border-radius:8px;padding:16px 20px;
+  background:linear-gradient(120deg,rgba(200,168,78,.14),rgba(45,212,191,.05))}
+.offer .big{font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.1}
+.offer .big em{display:block;font-style:normal;font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.offer .big small{display:block;font-family:var(--sans);font-size:11.5px;color:var(--gray);margin-top:8px;font-weight:400}
+.calls{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:center}
+.call{border:1px solid rgba(200,168,78,.4);border-radius:6px;padding:11px 14px;background:rgba(6,6,14,.5)}
+.call i{font-style:normal;font-size:11px;color:var(--gold);letter-spacing:.08em;display:block;margin-bottom:4px}
+.call b{font-family:var(--serif);font-weight:700;font-size:14.5px;display:block;line-height:1.25;margin-bottom:3px}
+.call span{font-size:11px;color:var(--gray);line-height:1.35}
+.calls .ar{text-align:center;color:rgba(200,168,78,.7);font-size:16px}
+#s5v .wstep,#s5v .copilot,#s5v .offer{opacity:0}
+.slide.on .wstep{animation:fadein .45s ease both}
+.slide.on .wstep:nth-child(1){animation-delay:.1s}.slide.on .wstep:nth-child(2){animation-delay:.25s}
+.slide.on .wstep:nth-child(3){animation-delay:.4s}.slide.on .wstep:nth-child(4){animation-delay:.55s}
+.slide.on .wstep:nth-child(5){animation-delay:.7s}
+.slide.on .copilot{animation:fadein .5s ease 1s both}
+.slide.on .offer{animation:sweep .9s cubic-bezier(.2,.75,.2,1) 1.4s both}
+
+/* ── theme ripple ── */
+#modeRipple{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+@keyframes rippleOut{0%{transform:scale(0);opacity:.18}100%{transform:scale(1);opacity:0}}
+/* ── side nav: dots + theme toggle ── */
+.nav{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:50;
+  display:flex;flex-direction:column;align-items:center;gap:9px;padding:12px 7px;border-radius:18px;
+  background:rgba(12,12,26,.65);border:1px solid rgba(200,168,78,.14);backdrop-filter:blur(8px);
+  opacity:.45;transition:opacity .3s,background .3s}
+.nav:hover{opacity:1;background:rgba(12,12,26,.9);border-color:rgba(200,168,78,.3)}
+.nav .dot2{width:6px;height:6px;border-radius:50%;background:rgba(238,238,240,.28);cursor:pointer;transition:all .25s}
+.nav .dot2.active{background:var(--gold);transform:scale(1.5)}
+.nav .sep{width:14px;height:1px;background:rgba(238,238,240,.14);margin:3px 0}
+.nav button{background:none;border:none;cursor:pointer;color:rgba(238,238,240,.55);font-size:15px;
+  padding:2px 4px;line-height:1;transition:color .2s}
+.nav button:hover{color:var(--gold)}
+
+/* ── light mode ── */
+body.light-mode{
+  --bg:#F3F2EC; --card:#FFFFFF; --white:#12131a; --dim:#343a46; --gray:#5b6270;
+  --line:rgba(18,19,26,.14); --gold:#8a6d1f; --teal:#0f8f7c; --coral:#b23a55}
+body.light-mode #stage{background:var(--bg)}
+body.light-mode .aurora{mix-blend-mode:multiply;opacity:.55}
+body.light-mode .nav{background:rgba(255,255,255,.7);border-color:rgba(18,19,26,.12)}
+body.light-mode .nav:hover{background:rgba(255,255,255,.95)}
+body.light-mode .nav .dot2{background:rgba(18,19,26,.25)}
+body.light-mode .nav button{color:rgba(18,19,26,.55)}
+body.light-mode tbody td.gl{color:#12131a}
+body.light-mode tbody td.pl{color:#4a505c}
+body.light-mode .bar2.gl,body.light-mode .bar2.kphi{color:#12131a}
+body.light-mode .gapzone .bk{background:#fff}
+body.light-mode .layer.us .name .phi,body.light-mode .mark .phi{color:var(--gold)}
+body.light-mode #bar{background:var(--gold)}
+body.light-mode .sowhat p b,body.light-mode .stage .no{color:#12131a}
+body.light-mode .aurora-mark{background:linear-gradient(100deg,#8a6d1f 0%,#8a6d1f 28%,#0f8f7c 40%,#2dbf9f 46%,#534ab7 53%,#b23a55 61%,#8a6d1f 72%,#8a6d1f 100%);background-size:320% 100%;-webkit-background-clip:text;background-clip:text}
+body.light-mode .aurora-mark::before{opacity:.25}
+/* ── close slide: outro video as background ── */
+#s10{overflow:hidden}
+.bgvideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
+  opacity:0;pointer-events:none}
+.slide.on .bgvideo{animation:fadein 1.6s ease .3s both;opacity:.85}
+.bgshade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,6,14,.35) 0%,rgba(6,6,14,.55) 45%,rgba(6,6,14,.35) 100%)}
+#s10 h2,#s10 .three,#s10 .cta{position:relative;z-index:2}
+#s10 .chrome{z-index:2}
+body.light-mode .bgshade{background:linear-gradient(90deg,rgba(243,242,236,.9) 0%,rgba(243,242,236,.65) 55%,rgba(243,242,236,.3) 100%)}
+
+/* 10 close */
+#s10{justify-content:center}
+#s10 h2{font-size:46px}
+#s10 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:40px}
+#s10 .three div{border-top:1px solid var(--gold);padding-top:15px}
+#s10 .three b{font-family:var(--serif);font-weight:700;font-size:19px;display:block;margin-bottom:7px}
+#s10 .three p{font-size:14px;color:var(--gray);line-height:1.5}
+#s10 .cta{margin-top:46px;font-size:18px;color:var(--dim)}
+#s10 .cta a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(200,168,78,.4)}
+
+#bar{position:absolute;left:0;bottom:0;height:2px;background:var(--gold);transition:width .25s ease}
+a:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.half svg polyline,.sc svg .draw{stroke-dashoffset:0}.sc svg .seg{transform:none}.half svg text{opacity:1}*{transition:none!important;animation:none!important}#s1 .layer,#s3b .half,#s3c .sc,#s3c .ledger-line,#s3 .bar2,#s3 .sowhat,#s9 .ing,#s9 .fsvg,#s9 .cook,#s9 .outc,#s9 .claude,#s5v .wstep,#s5v .copilot,#s5v .offer,#s5v .sheet{opacity:1}}
+
+:fullscreen{background:var(--bg)}
+:fullscreen #viewport{width:100vw;height:100vh}
+::backdrop{background:var(--bg)}
+html:fullscreen,body:fullscreen{overflow:hidden}
+@media print{
+  body,#viewport{overflow:visible;display:block;height:auto}
+  #stage{position:static;transform:none;width:1280px;height:auto}
+  .slide{display:flex!important;position:relative;height:720px;page-break-after:always;break-after:page;opacity:1!important;pointer-events:all!important;transform:none!important;filter:none!important}
+  .nav{display:none}
+  #bar{display:none}
+}
+
+/* ══ build deck — slide-specific ══ */
+
+/* 1 title */
+#s1{justify-content:center}
+.titlegrid{display:grid;grid-template-columns:1fr 470px;gap:44px;align-items:center}
+#s1 .mark{font-size:104px;margin-bottom:26px}
+#s1 h1{font-size:42px;max-width:20ch}
+#s1 .sub{margin-top:20px;font-size:16px;color:var(--dim);max-width:44ch;line-height:1.6}
+#s1 .stack{margin-top:0}
+#s1 .layers{gap:7px}
+#s1 .layer{grid-template-columns:1fr 176px;gap:14px;padding:11px 15px;position:relative}
+#s1 .layer .name{font-family:var(--serif);font-weight:700;font-size:15px}
+#s1 .layer .note{font-size:11px;color:var(--gray);text-align:right;line-height:1.35}
+#s1 .layer.us{padding:15px}
+#s1 .layer.us .name{font-size:21px}
+#s1 .layer.us .note{color:var(--dim)}
+#s1 .layer.ghost .name{text-decoration:line-through;text-decoration-thickness:1px;color:var(--coral)}
+#s1 .layer{opacity:0}
+.slide.on .layers .layer{animation:rise .5s cubic-bezier(.4,0,.2,1) both}
+.slide.on .layers .layer:nth-child(2){animation-delay:0s}
+.slide.on .layers .layer:nth-child(3){animation-delay:.09s}
+.slide.on .layers .layer:nth-child(4){animation-delay:.18s}
+.slide.on .layers .layer:nth-child(5){animation-delay:.27s}
+.slide.on .layers .layer:nth-child(6){animation-delay:.36s}
+.slide.on .layers .layer:nth-child(7){animation-delay:.45s}
+@keyframes rise{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+/* the write-back dot travels DOWN: from the build into the layers */
+@keyframes traveldown{
+  0%{top:-2%;opacity:0;background:var(--gold);box-shadow:0 0 14px rgba(200,168,78,.9)}
+  12%{opacity:1}
+  40%{background:var(--gold)}
+  60%{background:var(--teal);box-shadow:0 0 12px rgba(45,212,191,.85)}
+  88%{opacity:1}
+  100%{top:96%;opacity:0;background:var(--teal)}}
+.flow{position:absolute;left:-20px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,transparent,rgba(122,122,142,.22) 15%,rgba(122,122,142,.22) 85%,transparent)}
+.flow i{position:absolute;left:-3px;width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:0}
+.slide.on .flow i{animation:traveldown 3.4s ease-in-out .6s infinite}
+#s1 .flow{left:-14px}
+/* zoom links on the layers */
+.zoom{display:block;margin-top:4px;font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);text-decoration:none;white-space:nowrap;opacity:.7;transition:opacity .2s,color .2s}
+.zoom:hover{opacity:1;color:var(--gold)}
+.zoom::after{content:" ↗"}
+.layer.us .zoom{display:none}
+
+/* 2 the demand — where does the number go */
+#s2 h2{font-size:36px;max-width:none}
+.route{display:grid;grid-template-columns:200px 44px 250px 44px 1fr;align-items:center;margin-top:40px}
+.route .box{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:16px 18px}
+.route .box b{font-family:var(--serif);font-weight:700;font-size:17px;display:block;margin-bottom:5px}
+.route .box span{font-size:12px;color:var(--gray);line-height:1.4;display:block}
+.route .box.agent{border-color:rgba(45,212,191,.45);background:rgba(45,212,191,.06)}
+.route .ar{text-align:center;color:var(--gray);font-size:18px}
+.route .ends{display:flex;flex-direction:column;gap:9px}
+.route .end{border:1px dashed rgba(224,112,138,.55);background:rgba(224,112,138,.05);border-radius:6px;
+  padding:9px 14px;font-size:12.5px;color:var(--dim);display:flex;justify-content:space-between;align-items:center;gap:14px}
+.route .end em{font-style:normal;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--coral);white-space:nowrap}
+.route .end b{font-weight:500;color:var(--white)}
+.demand{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:34px}
+.demand div{border-top:1px solid var(--line);padding-top:12px}
+.demand b{display:block;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--gold);line-height:1.1;margin-bottom:5px}
+.demand p{font-size:12.5px;color:var(--gray);line-height:1.45}
+.sowhat{margin-top:44px;border-left:3px solid var(--gold);padding:13px 0 13px 18px;
+  background:linear-gradient(90deg,rgba(200,168,78,.11),transparent 72%);display:flex;gap:22px}
+.sowhat .lb{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding-top:3px;flex:none}
+.sowhat p{font-size:13.5px;color:var(--dim);line-height:1.5;max-width:100ch}
+.sowhat p b{color:var(--white);font-weight:500}
+#s2 .route .box,#s2 .route .ar,#s2 .route .end,#s2 .demand,#s2 .sowhat{opacity:0}
+.slide.on #s2 .box,.slide#s2.on .box{animation:fadein .5s ease both}
+.slide#s2.on .box:nth-child(1){animation-delay:.1s}
+.slide#s2.on .ar{animation:fadein .4s ease .5s both}
+.slide#s2.on .box.agent{animation-delay:.45s}
+.slide#s2.on .end{animation:fadein .45s ease both}
+.slide#s2.on .end:nth-child(1){animation-delay:1s}.slide#s2.on .end:nth-child(2){animation-delay:1.2s}.slide#s2.on .end:nth-child(3){animation-delay:1.4s}
+.slide#s2.on .demand{animation:fadein .5s ease 1.9s both}
+.slide#s2.on .sowhat{animation:fadein .55s ease 2.4s both}
+
+/* 3 three failures — reuses .sc cards */
+#s3 h2{font-size:34px;max-width:none}
+#s3 .short{flex:1;margin-top:30px}
+#s3 .sc{padding:20px 22px 18px}
+#s3 .sc svg{margin:6px 0 18px}
+#s3 .sc p{font-size:14px}
+.ledger-line{margin-top:28px;border-left:3px solid var(--gold);padding:8px 0 8px 14px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.ledger-line b{color:var(--white);font-weight:500}
+#s3 .sc,#s3 .ledger-line{opacity:0}
+.slide#s3.on .sc{animation:fadein .5s ease both}
+.slide#s3.on .sc:nth-child(1){animation-delay:.15s}.slide#s3.on .sc:nth-child(2){animation-delay:.7s}.slide#s3.on .sc:nth-child(3){animation-delay:1.25s}
+.slide#s3.on .ledger-line{animation:fadein .5s ease 2s both}
+.sc svg .draw{stroke-dasharray:900;stroke-dashoffset:900}
+.slide#s3.on .sc:nth-child(1) svg .draw{animation:drawc 1.1s ease .5s forwards}
+.slide#s3.on .sc:nth-child(2) svg .draw{animation:drawc 1.1s ease 1.05s forwards}
+.slide#s3.on .sc:nth-child(3) svg .draw{animation:drawc 1.1s ease 1.6s forwards}
+@keyframes drawc{to{stroke-dashoffset:0}}
+
+/* 4 the administered environment */
+#s4 h2{font-size:34px;max-width:none}
+.env{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:22px;flex:1}
+.envbox{position:relative;border:1px solid rgba(200,168,78,.55);border-radius:10px;padding:16px 22px 16px;
+  background:linear-gradient(160deg,rgba(200,168,78,.10),rgba(45,212,191,.05));display:flex;flex-direction:column;gap:12px}
+.envbox .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.envbox .guard{display:flex;flex-wrap:wrap;gap:5px;margin:-2px 0 6px}
+.envbox .guard span{font-size:10px;padding:3px 8px;border-radius:12px;border:1px solid rgba(200,168,78,.45);color:var(--dim);white-space:nowrap}
+.envbox .row{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center;border:1px solid var(--line);
+  background:rgba(6,6,14,.45);border-radius:6px;padding:14px 16px}
+.envbox .tail{margin-top:auto;font-size:12px;color:var(--gray);line-height:1.45;padding-top:8px;border-top:1px solid var(--line)}
+.envbox .row b{font-family:var(--serif);font-weight:700;font-size:16px}
+.envbox .row span{font-size:12px;color:var(--gray);line-height:1.4}
+.envbox .row.b{border-color:rgba(45,212,191,.5);background:rgba(45,212,191,.08)}
+.envbox .row.b b{color:var(--teal)}
+.envbox .row.b span{color:var(--dim)}
+.envbox .wb{text-align:center;font-size:11px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin:-2px 0}
+.usecase{display:flex;flex-direction:column;gap:12px}
+.usecase .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:-2px}
+.usecase h3{font-family:var(--serif);font-weight:700;font-size:21px;line-height:1.2}
+.uflow{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr;align-items:center}
+.uflow .n{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:10px 12px;min-height:74px;display:flex;flex-direction:column;justify-content:center}
+.uflow .n b{font-size:13px;font-weight:500;display:block;margin-bottom:3px}
+.uflow .n span{font-size:11px;color:var(--gray);line-height:1.35}
+.uflow .n.out{border-color:rgba(45,212,191,.5);background:rgba(45,212,191,.08)}
+.uflow .n.in{border-color:rgba(200,168,78,.45)}
+.uflow .ar{text-align:center;color:var(--gray);font-size:15px}
+.usecase ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.usecase li{font-size:12.5px;color:var(--dim);line-height:1.45;padding-left:14px;position:relative}
+.usecase li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--teal)}
+.usecase li b{color:var(--white);font-weight:500}
+.usecase .million{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;font-size:12.5px;color:var(--gray);line-height:1.45}
+.usecase .million b{color:var(--gold);font-weight:500}
+#s4 .envbox,#s4 .usecase{opacity:0}
+.slide#s4.on .envbox{animation:sweep .9s cubic-bezier(.2,.75,.2,1) .2s both}
+.slide#s4.on .usecase{animation:fadein .5s ease 1.2s both}
+
+/* 5 the builder pass — reuses .wiz/.wstep/.copilot */
+#s5 h2{font-size:34px;max-width:none}
+#s5 .ttv .lab{margin-top:26px}
+.pass{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pass .pbox{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:14px 18px}
+.pass .pbox b{font-family:var(--serif);font-weight:700;font-size:15px;display:block;margin-bottom:8px}
+.pass .pbox ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.pass .pbox li{font-size:12.5px;color:var(--dim);line-height:1.4;padding-left:14px;position:relative}
+.pass .pbox li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%}
+.pass .pbox.can li::before{background:var(--teal)} .pass .pbox.cant li::before{background:var(--coral)}
+.pass .pbox.cant{border-color:rgba(224,112,138,.4)}
+.pass .pbox.cant b{color:var(--coral)}
+.token{margin-top:4px;display:inline-flex;align-items:center;gap:10px;border:1px dashed rgba(200,168,78,.6);border-radius:6px;
+  padding:7px 14px;font-family:'IBM Plex Mono',ui-monospace,Menlo,monospace;font-size:12px;color:var(--gold);background:rgba(200,168,78,.06)}
+.token i{font-style:normal;color:var(--gray);font-family:var(--sans);font-size:11px}
+#s5 .wstep,#s5 .copilot,#s5 .pass,#s5 .token{opacity:0}
+.slide#s5.on .wstep{animation:fadein .45s ease both}
+.slide#s5.on .wstep:nth-child(1){animation-delay:.1s}.slide#s5.on .wstep:nth-child(2){animation-delay:.25s}
+.slide#s5.on .wstep:nth-child(3){animation-delay:.4s}.slide#s5.on .wstep:nth-child(4){animation-delay:.55s}
+.slide#s5.on .wstep:nth-child(5){animation-delay:.7s}
+.slide#s5.on .token{animation:fadein .4s ease 0s both}
+.slide#s5.on .copilot{animation:fadein .5s ease 1s both}
+.slide#s5.on .pass{animation:fadein .5s ease 1.3s both}
+
+/* 6-8 walk back — the stack with the live layer lit */
+.slide.wb h2{max-width:none}
+.wb-grid{display:grid;grid-template-columns:330px 1fr;gap:40px;margin-top:22px;flex:1;align-items:start}
+.ministack{display:flex;flex-direction:column;gap:6px;position:relative;padding-left:22px}
+.ministack .ml{border:1px solid var(--line);background:var(--card);padding:10px 14px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;opacity:.45;transition:opacity .3s}
+.ministack .ml b{font-family:var(--serif);font-weight:700;font-size:15px}
+.ministack .ml span{font-size:10.5px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase}
+.ministack .ml.top{border-color:rgba(200,168,78,.5);background:linear-gradient(90deg,rgba(200,168,78,.14),rgba(45,212,191,.06));opacity:.8}
+.ministack .ml.top b{font-size:17px}
+.ministack .ml.lit{opacity:1;border-color:rgba(45,212,191,.6);background:rgba(45,212,191,.09);box-shadow:0 0 0 3px rgba(45,212,191,.08)}
+.ministack .ml.lit b{color:var(--white)}
+.ministack .ml.lit span{color:var(--teal)}
+.ministack .flow{left:4px}
+.ministack .mlink{margin-top:10px;display:inline-flex;align-items:center;gap:9px;font-size:11.5px;color:var(--gold);text-decoration:none;
+  border:1px solid rgba(200,168,78,.45);border-radius:20px;padding:7px 14px;background:rgba(200,168,78,.06);transition:background .2s}
+.ministack .mlink:hover{background:rgba(200,168,78,.16)}
+.ministack .mlink em{font-style:normal;color:var(--gray);font-size:10.5px}
+.ministack .mlink::after{content:"↗";font-size:12px}
+.wb-body h3{font-family:var(--serif);font-weight:700;font-size:21px;line-height:1.2;margin-bottom:12px}
+.wb-cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.wb-cols .cap{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
+.wb-cols .holds .cap{color:var(--gold)} .wb-cols .does .cap{color:var(--teal)}
+.wb-cols ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.wb-cols li{font-size:13px;color:var(--dim);line-height:1.45;padding-left:14px;position:relative}
+.wb-cols li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%}
+.wb-cols .holds li::before{background:var(--gold)} .wb-cols .does li::before{background:var(--teal)}
+.wb-cols li b{color:var(--white);font-weight:500}
+.wb-cols .does{border-left:1px solid var(--line);padding-left:22px}
+.wb-cols .does li.w{border:1px solid rgba(45,212,191,.4);background:rgba(45,212,191,.07);border-radius:6px;padding:8px 12px 8px 24px}
+.wb-cols .does li.w::before{left:10px;top:13px}
+.wb-cols .does li.w em{font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);display:block;margin-bottom:2px}
+.wb-kick{margin-top:18px;border-top:1px solid var(--line);padding-top:12px;font-size:13.5px;color:var(--dim);line-height:1.5}
+.wb-kick b{color:var(--gold);font-weight:500}
+.wb .ministack .ml,.wb .wb-body,.wb .mlink{opacity:0}
+.slide.wb.on .ministack .ml{animation:rise .45s ease both}
+.slide.wb.on .ministack .ml:nth-child(2){animation-delay:.05s}.slide.wb.on .ministack .ml:nth-child(3){animation-delay:.15s}
+.slide.wb.on .ministack .ml:nth-child(4){animation-delay:.25s}.slide.wb.on .ministack .ml:nth-child(5){animation-delay:.35s}
+.slide.wb.on .ministack .ml:nth-child(6){animation-delay:.45s}
+.slide.wb.on .ministack .ml.lit{animation:rise .45s ease both,litpulse 2.6s ease-in-out 1.2s infinite}
+.slide.wb.on .mlink{animation:fadein .4s ease 1s both}
+.slide.wb.on .wb-body{animation:fadein .55s ease .6s both}
+@keyframes litpulse{0%,100%{box-shadow:0 0 0 3px rgba(45,212,191,.08)}50%{box-shadow:0 0 0 6px rgba(45,212,191,.16)}}
+/* lit layer keeps its final opacity after the rise animation */
+.ministack .ml.top{opacity:.8}
+
+/* 9 close extras */
+#s10 .cta small{display:block;font-size:13px;color:var(--gray);margin-top:10px}
+#s10 .cta small a{border-bottom-color:rgba(200,168,78,.25)}
+
+@media (prefers-reduced-motion:reduce){.sc svg .draw{stroke-dashoffset:0}*{transition:none!important;animation:none!important}
+ #s1 .layer,#s2 .route .box,#s2 .route .ar,#s2 .route .end,#s2 .demand,#s2 .sowhat,#s3 .sc,#s3 .ledger-line,#s4 .envbox,#s4 .usecase,#s5 .wstep,#s5 .copilot,#s5 .pass,#s5 .token,.wb .ministack .ml,.wb .wb-body,.wb .mlink{opacity:1}}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+  <div class="aurora"><svg viewBox="0 0 1680 132" xmlns="http://www.w3.org/2000/svg">
+  <polyline class="rib r0" points="-40,34.6 -32,36.8 -24,39.8 -16,43.5 -8,47.6 0,52.0 8,56.4 16,60.5 24,64.2 32,67.2 40,69.4 48,70.7 56,71.2 64,70.8 72,69.7 80,68.0 88,65.9 96,63.6 104,61.3 112,59.2 120,57.2 128,55.6 136,54.3 144,53.4 152,52.6 160,52.0 168,51.4 176,50.6 184,49.7 192,48.4 200,46.8 208,44.8 216,42.7 224,40.4 232,38.1 240,36.0 248,34.3 256,33.2 264,32.8 272,33.3 280,34.6 288,36.8 296,39.8 304,43.5 312,47.6 320,52.0 328,56.4 336,60.5 344,64.2 352,67.2 360,69.4 368,70.7 376,71.2 384,70.8 392,69.7 400,68.0 408,65.9 416,63.6 424,61.3 432,59.2 440,57.2 448,55.6 456,54.3 464,53.4 472,52.6 480,52.0 488,51.4 496,50.6 504,49.7 512,48.4 520,46.8 528,44.8 536,42.7 544,40.4 552,38.1 560,36.0 568,34.3 576,33.2 584,32.8 592,33.3 600,34.6 608,36.8 616,39.8 624,43.5 632,47.6 640,52.0 648,56.4 656,60.5 664,64.2 672,67.2 680,69.4 688,70.7 696,71.2 704,70.8 712,69.7 720,68.0 728,65.9 736,63.6 744,61.3 752,59.2 760,57.2 768,55.6 776,54.3 784,53.4 792,52.6 800,52.0 808,51.4 816,50.6 824,49.7 832,48.4 840,46.8 848,44.8 856,42.7 864,40.4 872,38.1 880,36.0 888,34.3 896,33.2 904,32.8 912,33.3 920,34.6 928,36.8 936,39.8 944,43.5 952,47.6 960,52.0 968,56.4 976,60.5 984,64.2 992,67.2 1000,69.4 1008,70.7 1016,71.2 1024,70.8 1032,69.7 1040,68.0 1048,65.9 1056,63.6 1064,61.3 1072,59.2 1080,57.2 1088,55.6 1096,54.3 1104,53.4 1112,52.6 1120,52.0 1128,51.4 1136,50.6 1144,49.7 1152,48.4 1160,46.8 1168,44.8 1176,42.7 1184,40.4 1192,38.1 1200,36.0 1208,34.3 1216,33.2 1224,32.8 1232,33.3 1240,34.6 1248,36.8 1256,39.8 1264,43.5 1272,47.6 1280,52.0 1288,56.4 1296,60.5 1304,64.2 1312,67.2 1320,69.4 1328,70.7 1336,71.2 1344,70.8 1352,69.7 1360,68.0 1368,65.9 1376,63.6 1384,61.3 1392,59.2 1400,57.2 1408,55.6 1416,54.3 1424,53.4 1432,52.6 1440,52.0 1448,51.4 1456,50.6 1464,49.7 1472,48.4 1480,46.8 1488,44.8 1496,42.7 1504,40.4 1512,38.1 1520,36.0 1528,34.3 1536,33.2 1544,32.8 1552,33.3 1560,34.6 1568,36.8 1576,39.8 1584,43.5 1592,47.6 1600,52.0 1608,56.4 1616,60.5 1624,64.2 1632,67.2 1640,69.4 1648,70.7 1656,71.2 1664,70.8 1672,69.7 1680,68.0" fill="none" stroke="#c5b358" stroke-width="14" stroke-linecap="round"/>
+<polyline class="rib r1" points="-40,80.9 -32,85.8 -24,89.8 -16,92.6 -8,94.2 0,94.5 8,93.5 16,91.5 24,88.6 32,85.0 40,81.1 48,77.1 56,73.3 64,69.8 72,66.9 80,64.6 88,62.8 96,61.5 104,60.6 112,59.9 120,59.2 128,58.4 136,57.4 144,56.0 152,54.2 160,52.1 168,49.8 176,47.5 184,45.4 192,43.8 200,42.8 208,42.6 216,43.5 224,45.6 232,48.7 240,52.8 248,57.8 256,63.4 264,69.4 272,75.3 280,80.9 288,85.8 296,89.8 304,92.6 312,94.2 320,94.5 328,93.5 336,91.5 344,88.6 352,85.0 360,81.1 368,77.1 376,73.3 384,69.8 392,66.9 400,64.6 408,62.8 416,61.5 424,60.6 432,59.9 440,59.2 448,58.4 456,57.4 464,56.0 472,54.2 480,52.1 488,49.8 496,47.5 504,45.4 512,43.8 520,42.8 528,42.6 536,43.5 544,45.6 552,48.7 560,52.8 568,57.8 576,63.4 584,69.4 592,75.3 600,80.9 608,85.8 616,89.8 624,92.6 632,94.2 640,94.5 648,93.5 656,91.5 664,88.6 672,85.0 680,81.1 688,77.1 696,73.3 704,69.8 712,66.9 720,64.6 728,62.8 736,61.5 744,60.6 752,59.9 760,59.2 768,58.4 776,57.4 784,56.0 792,54.2 800,52.1 808,49.8 816,47.5 824,45.4 832,43.8 840,42.8 848,42.6 856,43.5 864,45.6 872,48.7 880,52.8 888,57.8 896,63.4 904,69.4 912,75.3 920,80.9 928,85.8 936,89.8 944,92.6 952,94.2 960,94.5 968,93.5 976,91.5 984,88.6 992,85.0 1000,81.1 1008,77.1 1016,73.3 1024,69.8 1032,66.9 1040,64.6 1048,62.8 1056,61.5 1064,60.6 1072,59.9 1080,59.2 1088,58.4 1096,57.4 1104,56.0 1112,54.2 1120,52.1 1128,49.8 1136,47.5 1144,45.4 1152,43.8 1160,42.8 1168,42.6 1176,43.5 1184,45.6 1192,48.7 1200,52.8 1208,57.8 1216,63.4 1224,69.4 1232,75.3 1240,80.9 1248,85.8 1256,89.8 1264,92.6 1272,94.2 1280,94.5 1288,93.5 1296,91.5 1304,88.6 1312,85.0 1320,81.1 1328,77.1 1336,73.3 1344,69.8 1352,66.9 1360,64.6 1368,62.8 1376,61.5 1384,60.6 1392,59.9 1400,59.2 1408,58.4 1416,57.4 1424,56.0 1432,54.2 1440,52.1 1448,49.8 1456,47.5 1464,45.4 1472,43.8 1480,42.8 1488,42.6 1496,43.5 1504,45.6 1512,48.7 1520,52.8 1528,57.8 1536,63.4 1544,69.4 1552,75.3 1560,80.9 1568,85.8 1576,89.8 1584,92.6 1592,94.2 1600,94.5 1608,93.5 1616,91.5 1624,88.6 1632,85.0 1640,81.1 1648,77.1 1656,73.3 1664,69.8 1672,66.9 1680,64.6" fill="none" stroke="#36d6a0" stroke-width="16" stroke-linecap="round"/>
+<polyline class="rib r2" points="-40,84.5 -32,82.4 -24,79.5 -16,76.0 -8,72.2 0,68.2 8,64.4 16,60.9 24,57.9 32,55.5 40,53.6 48,52.4 56,51.6 64,51.1 72,50.9 80,50.6 88,50.3 96,49.7 104,48.9 112,47.8 120,46.5 128,45.2 136,43.9 144,43.0 152,42.4 160,42.5 168,43.4 176,45.1 184,47.7 192,51.2 200,55.3 208,60.0 216,64.9 224,69.9 232,74.5 240,78.7 248,82.0 256,84.3 264,85.5 272,85.6 280,84.5 288,82.4 296,79.5 304,76.0 312,72.2 320,68.2 328,64.4 336,60.9 344,57.9 352,55.5 360,53.6 368,52.4 376,51.6 384,51.1 392,50.9 400,50.6 408,50.3 416,49.7 424,48.9 432,47.8 440,46.5 448,45.2 456,43.9 464,43.0 472,42.4 480,42.5 488,43.4 496,45.1 504,47.7 512,51.2 520,55.3 528,60.0 536,64.9 544,69.9 552,74.5 560,78.7 568,82.0 576,84.3 584,85.5 592,85.6 600,84.5 608,82.4 616,79.5 624,76.0 632,72.2 640,68.2 648,64.4 656,60.9 664,57.9 672,55.5 680,53.6 688,52.4 696,51.6 704,51.1 712,50.9 720,50.6 728,50.3 736,49.7 744,48.9 752,47.8 760,46.5 768,45.2 776,43.9 784,43.0 792,42.4 800,42.5 808,43.4 816,45.1 824,47.7 832,51.2 840,55.3 848,60.0 856,64.9 864,69.9 872,74.5 880,78.7 888,82.0 896,84.3 904,85.5 912,85.6 920,84.5 928,82.4 936,79.5 944,76.0 952,72.2 960,68.2 968,64.4 976,60.9 984,57.9 992,55.5 1000,53.6 1008,52.4 1016,51.6 1024,51.1 1032,50.9 1040,50.6 1048,50.3 1056,49.7 1064,48.9 1072,47.8 1080,46.5 1088,45.2 1096,43.9 1104,43.0 1112,42.4 1120,42.5 1128,43.4 1136,45.1 1144,47.7 1152,51.2 1160,55.3 1168,60.0 1176,64.9 1184,69.9 1192,74.5 1200,78.7 1208,82.0 1216,84.3 1224,85.5 1232,85.6 1240,84.5 1248,82.4 1256,79.5 1264,76.0 1272,72.2 1280,68.2 1288,64.4 1296,60.9 1304,57.9 1312,55.5 1320,53.6 1328,52.4 1336,51.6 1344,51.1 1352,50.9 1360,50.6 1368,50.3 1376,49.7 1384,48.9 1392,47.8 1400,46.5 1408,45.2 1416,43.9 1424,43.0 1432,42.4 1440,42.5 1448,43.4 1456,45.1 1464,47.7 1472,51.2 1480,55.3 1488,60.0 1496,64.9 1504,69.9 1512,74.5 1520,78.7 1528,82.0 1536,84.3 1544,85.5 1552,85.6 1560,84.5 1568,82.4 1576,79.5 1584,76.0 1592,72.2 1600,68.2 1608,64.4 1616,60.9 1624,57.9 1632,55.5 1640,53.6 1648,52.4 1656,51.6 1664,51.1 1672,50.9 1680,50.6" fill="none" stroke="#534ab7" stroke-width="18" stroke-linecap="round"/>
+<polyline class="rib r3" points="-40,73.8 -32,69.1 -24,65.2 -16,62.2 -8,60.1 0,58.8 8,58.3 16,58.2 24,58.5 32,58.9 40,59.2 48,59.3 56,59.1 64,58.6 72,57.9 80,57.0 88,56.3 96,55.9 104,55.9 112,56.7 120,58.4 128,61.0 136,64.6 144,69.1 152,74.3 160,80.1 168,86.0 176,91.7 184,96.9 192,101.3 200,104.6 208,106.6 216,107.1 224,106.1 232,103.7 240,100.1 248,95.5 256,90.2 264,84.6 272,79.1 280,73.8 288,69.1 296,65.2 304,62.2 312,60.1 320,58.8 328,58.3 336,58.2 344,58.5 352,58.9 360,59.2 368,59.3 376,59.1 384,58.6 392,57.9 400,57.0 408,56.3 416,55.9 424,55.9 432,56.7 440,58.4 448,61.0 456,64.6 464,69.1 472,74.3 480,80.1 488,86.0 496,91.7 504,96.9 512,101.3 520,104.6 528,106.6 536,107.1 544,106.1 552,103.7 560,100.1 568,95.5 576,90.2 584,84.6 592,79.1 600,73.8 608,69.1 616,65.2 624,62.2 632,60.1 640,58.8 648,58.3 656,58.2 664,58.5 672,58.9 680,59.2 688,59.3 696,59.1 704,58.6 712,57.9 720,57.0 728,56.3 736,55.9 744,55.9 752,56.7 760,58.4 768,61.0 776,64.6 784,69.1 792,74.3 800,80.1 808,86.0 816,91.7 824,96.9 832,101.3 840,104.6 848,106.6 856,107.1 864,106.1 872,103.7 880,100.1 888,95.5 896,90.2 904,84.6 912,79.1 920,73.8 928,69.1 936,65.2 944,62.2 952,60.1 960,58.8 968,58.3 976,58.2 984,58.5 992,58.9 1000,59.2 1008,59.3 1016,59.1 1024,58.6 1032,57.9 1040,57.0 1048,56.3 1056,55.9 1064,55.9 1072,56.7 1080,58.4 1088,61.0 1096,64.6 1104,69.1 1112,74.3 1120,80.1 1128,86.0 1136,91.7 1144,96.9 1152,101.3 1160,104.6 1168,106.6 1176,107.1 1184,106.1 1192,103.7 1200,100.1 1208,95.5 1216,90.2 1224,84.6 1232,79.1 1240,73.8 1248,69.1 1256,65.2 1264,62.2 1272,60.1 1280,58.8 1288,58.3 1296,58.2 1304,58.5 1312,58.9 1320,59.2 1328,59.3 1336,59.1 1344,58.6 1352,57.9 1360,57.0 1368,56.3 1376,55.9 1384,55.9 1392,56.7 1400,58.4 1408,61.0 1416,64.6 1424,69.1 1432,74.3 1440,80.1 1448,86.0 1456,91.7 1464,96.9 1472,101.3 1480,104.6 1488,106.6 1496,107.1 1504,106.1 1512,103.7 1520,100.1 1528,95.5 1536,90.2 1544,84.6 1552,79.1 1560,73.8 1568,69.1 1576,65.2 1584,62.2 1592,60.1 1600,58.8 1608,58.3 1616,58.2 1624,58.5 1632,58.9 1640,59.2 1648,59.3 1656,59.1 1664,58.6 1672,57.9 1680,57.0" fill="none" stroke="#e6007e" stroke-width="12" stroke-linecap="round"/>
+  </svg></div>
+
+  <!-- 1 -->
+  <section class="slide on" id="s1">
+    <div class="titlegrid">
+      <div class="tleft">
+        <div class="mark aurora-mark">K-<span class="phi">Φ</span></div>
+        <h1>Build the model your business needs. On the system of record.</h1>
+        <p class="sub" style="margin-bottom:auto">A builder pass turns Claude into your in-house developer. What it builds lands in your treasury and FP&amp;A data, not in a dashboard beside them.</p>
+      </div>
+      <div class="tright">
+        <div class="stack"><div class="layers">
+          <div class="flow"><i></i></div>
+          <div class="layer us"><div class="name">BUILD <span style="font-size:12px;color:var(--gold);font-family:var(--sans);font-weight:400;letter-spacing:.08em;margin-left:6px">your extension</span></div>
+            <div class="note">Your industry, your inputs, your logic. Written into the layers below.</div></div>
+          <div class="layer"><div class="name">Treasury</div>
+            <div class="note">Bank, payments, dated cash, covenants<a class="zoom" href="../#2" title="Open the ledger deck at this layer">zoom</a></div></div>
+          <div class="layer"><div class="name">Working capital</div>
+            <div class="note">AR, AP, measured DSO · DPO · DIO<a class="zoom" href="../#4" title="Open the ledger deck at this layer">zoom</a></div></div>
+          <div class="layer"><div class="name">FP&amp;A</div>
+            <div class="note">Statements, budget, versions, scenarios<a class="zoom" href="../#7" title="Open the ledger deck at this layer">zoom</a></div></div>
+          <div class="layer ghost"><div class="name">The dashboard beside the system</div>
+            <div class="note">What the builder pass makes unnecessary</div></div>
+          <div class="layer"><div class="name">ERP / general ledger · banks</div>
+            <div class="note">SAP · Oracle · NetSuite · QuickBooks · Xero</div></div>
+        </div></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span>The build</span><span>The layers</span></div><div class="count">01 / 9</div></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="slide" id="s2">
+    <div class="eyebrow">The demand</div>
+    <h2>Build versus buy is settled. Finance teams build. Then the number has nowhere to go.</h2>
+    <div class="route">
+      <div class="box"><b>A finance team, a prompt</b><span>"Map our deal pipeline to the cash forecast, by entity, with our own conversion rates."</span></div>
+      <div class="ar">→</div>
+      <div class="box agent"><b>Claude · Codex · Gemini CLI</b><span>The model writes the logic in an afternoon. This part is solved, and it is getting cheaper every quarter.</span></div>
+      <div class="ar">→</div>
+      <div class="ends">
+        <div class="end"><span><b>A dashboard</b> next to the TMS, refreshed by whoever built it</span><em>ends here</em></div>
+        <div class="end"><span><b>A workbook,</b> again, with the extraction redone by hand</span><em>ends here</em></div>
+        <div class="end"><span><b>A screenshot</b> in a thread, stale by the next close</span><em>ends here</em></div>
+      </div>
+    </div>
+    <div class="demand">
+      <div><b>Hundreds</b><p>of treasurers and controllers in a single webinar on building their own finance tools with AI.</p></div>
+      <div><b>Build vs buy</b><p>is the finance post that travels: five times the reach of a product video.</p></div>
+      <div><b>Every client</b><p>we talk to has a model somebody built on the side. None of them writes into the system of record.</p></div>
+    </div>
+    <div class="sowhat">
+      <div class="lb">So what</div>
+      <p>Building got cheap. <b>Landing the result where treasury and FP&amp;A actually read it did not.</b> The harness is not the problem. The destination is.</p>
+    </div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">02 / 9</div></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="slide" id="s3">
+    <div class="eyebrow">Building beside the system</div>
+    <h2>Three ways a build that lives outside the system fails.</h2>
+    <div class="short">
+      <div class="sc"><div class="n">1</div>
+        <h3>Every build redoes the plumbing.</h3>
+        <svg viewBox="0 0 300 70" xmlns="http://www.w3.org/2000/svg">
+          <g font-size="9" fill="var(--gray)" font-family="DM Sans,sans-serif">
+            <text x="4" y="14">build 1</text><text x="4" y="38">build 2</text><text x="4" y="62">build 3</text>
+          </g>
+          <g stroke="var(--coral)" stroke-width="1.2" fill="none" class="draw">
+            <path d="M48,10 h60 l8,0 h60 l8,0 h60 l8,0 h40"/>
+            <path d="M48,34 h60 l8,0 h60 l8,0 h60 l8,0 h40"/>
+            <path d="M48,58 h60 l8,0 h60 l8,0 h60 l8,0 h40"/>
+          </g>
+          <g font-size="8.5" fill="var(--dim)" font-family="DM Sans,sans-serif">
+            <text x="52" y="6">extract</text><text x="120" y="6">normalise</text><text x="188" y="6">FX · entities</text><text x="256" y="6">then logic</text>
+          </g>
+          <g fill="var(--coral)" opacity=".7"><circle cx="48" cy="10" r="2.5"/><circle cx="48" cy="34" r="2.5"/><circle cx="48" cy="58" r="2.5"/></g>
+        </svg>
+        <p>Extraction, normalisation, entity and currency mapping: <b>done again for each build</b>, by the one person who understood the last one. Three builds, three copies of the same data, three definitions of DSO.</p>
+      </div>
+      <div class="sc"><div class="n">2</div>
+        <h3>Nothing is administered.</h3>
+        <svg viewBox="0 0 300 70" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="var(--gray)" stroke-width="1" fill="none" stroke-dasharray="3 3" opacity=".6">
+            <rect x="10" y="8" width="130" height="54" rx="4"/>
+          </g>
+          <text x="20" y="26" font-size="9" fill="var(--gray)" font-family="DM Sans,sans-serif">one laptop</text>
+          <text x="20" y="42" font-size="9" fill="var(--gray)" font-family="DM Sans,sans-serif">one login</text>
+          <text x="20" y="56" font-size="9" fill="var(--gray)" font-family="DM Sans,sans-serif">one version</text>
+          <g class="draw" stroke="var(--coral)" stroke-width="1.2" fill="none">
+            <path d="M150,35 h30"/><path d="M180,35 l-5,-4 m5,4 l-5,4"/>
+          </g>
+          <g font-size="9" fill="var(--coral)" font-family="DM Sans,sans-serif">
+            <text x="192" y="22">no rights</text><text x="192" y="36">no audit trail</text><text x="192" y="50">no second pair of eyes</text><text x="192" y="64">no rollback</text>
+          </g>
+        </svg>
+        <p>Who can run it, who changed it, which version produced last month's figure: <b>nobody can say</b>. The output is one person's number. Auditors, lenders and the board do not read one person's number.</p>
+      </div>
+      <div class="sc"><div class="n">3</div>
+        <h3>The number stays outside.</h3>
+        <svg viewBox="0 0 300 70" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="var(--gold)" stroke-width="1" fill="none" opacity=".7">
+            <rect x="10" y="10" width="160" height="50" rx="4"/>
+          </g>
+          <g font-size="8.5" fill="var(--dim)" font-family="DM Sans,sans-serif">
+            <text x="20" y="27">cash forecast</text><text x="20" y="41">covenant headroom</text><text x="20" y="55">board pack</text>
+          </g>
+          <text x="90" y="8" font-size="8" fill="var(--gold)" font-family="DM Sans,sans-serif" letter-spacing=".1em">SYSTEM OF RECORD</text>
+          <g stroke="var(--coral)" stroke-width="1.2" fill="none" stroke-dasharray="4 3" class="draw">
+            <path d="M255,35 C230,35 215,35 172,35"/>
+          </g>
+          <circle cx="258" cy="35" r="9" fill="none" stroke="var(--coral)" stroke-width="1.2"/>
+          <text x="254" y="39" font-size="10" fill="var(--coral)" font-family="DM Sans,sans-serif">?</text>
+          <g stroke="var(--coral)" stroke-width="1.6"><line x1="166" y1="28" x2="178" y2="42"/><line x1="178" y1="28" x2="166" y2="42"/></g>
+          <text x="236" y="60" font-size="8.5" fill="var(--coral)" font-family="DM Sans,sans-serif">the build</text>
+        </svg>
+        <p>Treasury does not read it, the forecast does not use it, the next close makes it stale. <b>A model that cannot write into the cash position is an opinion</b>, however good the logic.</p>
+      </div>
+    </div>
+    <div class="ledger-line">The demand is real and the tooling is good. <b>What is missing is a destination: an environment where a build becomes part of the data everyone else already works from.</b></div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">03 / 9</div></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="slide" id="s4">
+    <div class="eyebrow">What makes a build meaningful</div>
+    <h2>An administered environment, with the data already in it.</h2>
+    <div class="env">
+      <div class="envbox">
+        <div class="cap">The K-Φ instance</div>
+        <div class="guard"><span>tenant isolation</span><span>permissions</span><span>audit trail</span><span>MFA</span><span>versioning</span><span>pseudonymisation</span><span>two-admin confirmation</span></div>
+        <div class="row b"><b>BUILD</b><span>Your extension: own pages, own logic, external inputs. Runs under the same rights, logs and versions as everything else.</span></div>
+        <div class="wb">↓ writes back ↓</div>
+        <div class="row"><b>Treasury</b><span>Bank balances and transactions, payments, dated cash forecast, covenant headroom</span></div>
+        <div class="row"><b>Working capital</b><span>AR and AP by counterparty, DSO · DPO · DIO measured from settlement history</span></div>
+        <div class="row"><b>FP&amp;A</b><span>Statements from the ledger, budget, versions locked at each close, scenarios, valuation</span></div>
+        <div class="tail">Each layer is a set of tables with the measured rules behind them, exposed to the builder as a catalogue. The extension never copies the data; it reads and writes it where it lives.</div>
+      </div>
+      <div class="usecase">
+        <div class="cap">One use case, one of a million</div>
+        <h3>Deal pipeline into the cash forecast.</h3>
+        <div class="uflow">
+          <div class="n in"><b>Salesforce</b><span>open deals, stage, close date, amount, by entity</span></div>
+          <div class="ar">→</div>
+          <div class="n"><b>Your logic</b><span>conversion by stage, payment terms by client type, your own calendar</span></div>
+          <div class="ar">→</div>
+          <div class="n out"><b>Cash forecast</b><span>dated inflows written into the same horizon treasury already reads</span></div>
+        </div>
+        <ul>
+          <li><b>Reads what K-Φ already measured</b>: the DSO of the counterparty, not a typed assumption.</li>
+          <li><b>Writes into Cash</b>: the pipeline shows up in the forecast, the covenant test and the board pack, versioned with the next close.</li>
+          <li><b>Iterates</b>: the next version of the logic goes through the API; nothing is rebuilt from scratch.</li>
+        </ul>
+        <div class="million">A hedge fund's capital calls, a franchisor's royalty timing, a shipper's fuel hedge, a PE fund's portfolio liquidity: <b>the pattern is the same, the logic is yours.</b></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">04 / 9</div></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="slide" id="s5">
+    <div class="eyebrow">The builder pass</div>
+    <h2>Paste it into Claude. Describe the logic. It lands in K-Φ.</h2>
+    <div class="ttv">
+      <div class="token">kphi-build-••••-••••<i>a builder pass, one per account</i></div>
+      <div class="lab">From the paste to the write-back</div>
+      <div class="wiz">
+        <div class="wstep"><i class="tc">YOU</i><b>Paste the pass</b><span>into Claude, Codex or Gemini CLI. Nothing to install, nothing to configure, no GitHub to learn.</span></div>
+        <div class="wstep"><i class="tc">YOU</i><b>Describe the logic</b><span>your industry, your inputs, your rules, in plain language. Point at external systems if you need them.</span></div>
+        <div class="wstep auto"><i class="tw">AGENT</i><b>Builds the extension</b><span>from a catalogue of ready widgets (cash, bank, invoices, forecast, scenario, covenant, valuation) and custom pages.</span></div>
+        <div class="wstep auto"><i class="tw">K-Φ</i><b>Deploys it</b><span>on its own domain, shown frameless in K-Φ's theme. K-Φ holds the only deployment key; nobody pastes a token into a chat.</span></div>
+        <div class="wstep auto"><i class="tw">K-Φ</i><b>Writes back</b><span>into Treasury, Working capital or FP&amp;A, under your rights, every action in the audit trail.</span></div>
+      </div>
+      <div class="copilot"><b>Then keep building</b>
+        <span>the next update goes through the API, on the same extension. One pass, as many iterations as the business needs.</span></div>
+      <div class="pass">
+        <div class="pbox can"><b>What a builder can do</b>
+          <ul><li>Create and change pages, menus and widgets in the BUILD workspace</li>
+              <li>Read every table K-Φ already holds, with the measured rules behind them</li>
+              <li>Write results into the data layers, versioned like a close</li></ul></div>
+        <div class="pbox cant"><b>What a builder cannot do</b>
+          <ul><li>Touch the FP&amp;A or CASH workspaces themselves</li>
+              <li>See another tenant, or a name before it is pseudonymised</li>
+              <li>Push a change live without the confirmation step</li></ul></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span class="here">The build</span><span>The layers</span></div><div class="count">05 / 9</div></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="slide wb" id="s6">
+    <div class="eyebrow">Walk back · layer 1 of 3</div>
+    <h2>Treasury: what the extension writes into.</h2>
+    <div class="wb-grid">
+      <div class="ministack">
+        <div class="flow"><i></i></div>
+        <div class="ml top"><b>BUILD</b><span>your extension</span></div>
+        <div class="ml lit"><b>Treasury</b><span>this layer</span></div>
+        <div class="ml"><b>Working capital</b><span></span></div>
+        <div class="ml"><b>FP&amp;A</b><span></span></div>
+        <div class="ml"><b>Ledger · banks</b><span>sources</span></div>
+        <a class="mlink" href="../#2">Zoom on this layer <em>ledger deck, slide 2</em></a>
+      </div>
+      <div class="wb-body">
+        <h3>The dated cash position, day 0 to the next three quarters, on one axis.</h3>
+        <div class="wb-cols">
+          <div class="holds"><div class="cap">What the layer holds</div>
+            <ul><li><b>Bank balances and transactions</b>, by account, value-dated, with provisional GL entries posted from the movements</li>
+                <li><b>Payments and group transfers</b>, approved with segregation of duties, at least two signers</li>
+                <li><b>The dated cash forecast</b>: weeks 2 to 13 from the ledger, the next quarters from the budget, versioned at each close</li>
+                <li><b>Covenant headroom</b> monitored on the forecast, stress-tested before the breach</li></ul></div>
+          <div class="does"><div class="cap">What an extension does with it</div>
+            <ul><li>Reads the position and the forecast, per entity and currency</li>
+                <li class="w"><em>Write-back</em>Adds dated flows the ledger cannot see: a pipeline, capital calls, a fuel hedge, a royalty calendar</li>
+                <li class="w"><em>Write-back</em>Posts its own scenario and reads the covenant impact on the same forecast</li>
+                <li>Exports in the format of the TMS that already runs day 0 to 5</li></ul></div>
+        </div>
+        <div class="wb-kick">The extension is not a second forecast. <b>It is extra flows on the one forecast treasury already reads.</b></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">06 / 9</div></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="slide wb" id="s7">
+    <div class="eyebrow">Walk back · layer 2 of 3</div>
+    <h2>Working capital: what makes the write-back a number, not a guess.</h2>
+    <div class="wb-grid">
+      <div class="ministack">
+        <div class="flow"><i></i></div>
+        <div class="ml top"><b>BUILD</b><span>your extension</span></div>
+        <div class="ml"><b>Treasury</b><span></span></div>
+        <div class="ml lit"><b>Working capital</b><span>this layer</span></div>
+        <div class="ml"><b>FP&amp;A</b><span></span></div>
+        <div class="ml"><b>Ledger · banks</b><span>sources</span></div>
+        <a class="mlink" href="../#4">Zoom on this layer <em>ledger deck, slide 4</em></a>
+      </div>
+      <div class="wb-body">
+        <h3>Receivables, payables and inventory, dated by how each counterparty actually pays.</h3>
+        <div class="wb-cols">
+          <div class="holds"><div class="cap">What the layer holds</div>
+            <ul><li><b>Open AR and AP</b> from QuickBooks, Xero or the ERP, matched to the ledger and to the bank credits</li>
+                <li><b>DSO, DPO and DIO measured</b> from settlement history, per entity, business unit and counterparty: 360 curves where a workbook keeps one</li>
+                <li><b>One rule, applied at the grain you choose</b>: "collect AR at measured DSO, scope entity × counterparty"</li>
+                <li><b>Payment runs and rights</b> enforced inside Invoices, not in a mailbox</li></ul></div>
+          <div class="does"><div class="cap">What an extension does with it</div>
+            <ul><li>Takes the measured DSO of a client type instead of typing an assumption</li>
+                <li class="w"><em>Write-back</em>Tags counterparties with your own segmentation (brand, programme, fund) and the curves follow</li>
+                <li class="w"><em>Write-back</em>Creates its own flow rules in the engine's syntax; the engine replays them deterministically at the next close</li>
+                <li>Reads a client slipping to 120 days where it happens, in the right month</li></ul></div>
+        </div>
+        <div class="wb-kick">This is why a build on K-Φ is accurate without extra work: <b>the granularity is already measured and sitting there as rule inputs.</b></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">07 / 9</div></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="slide wb" id="s8">
+    <div class="eyebrow">Walk back · layer 3 of 3</div>
+    <h2>FP&amp;A: the foundation, built one step earlier than everyone else.</h2>
+    <div class="wb-grid">
+      <div class="ministack">
+        <div class="flow"><i></i></div>
+        <div class="ml top"><b>BUILD</b><span>your extension</span></div>
+        <div class="ml"><b>Treasury</b><span></span></div>
+        <div class="ml"><b>Working capital</b><span></span></div>
+        <div class="ml lit"><b>FP&amp;A</b><span>this layer</span></div>
+        <div class="ml"><b>Ledger · banks</b><span>sources</span></div>
+        <a class="mlink" href="../#7">Zoom on this layer <em>ledger deck, slide 7</em></a>
+      </div>
+      <div class="wb-body">
+        <h3>Statements constructed from the general ledger, not handed over as built.</h3>
+        <div class="wb-cols">
+          <div class="holds"><div class="cap">What the layer holds</div>
+            <ul><li><b>One GL import</b>: P&amp;L, balance sheet, direct and indirect cash flow, drillable to the entry, consolidated across entities (QuickBooks, Xero, 19 ERP layouts or a CSV)</li>
+                <li><b>Every entry carries</b> entity, account, counterparty, cost centre and date: slice on any of them</li>
+                <li><b>Budget and a ten-lever simulator</b>, progressively replaced by actuals as months close</li>
+                <li><b>Versions cut by the close</b>, the previous one locked; valuation from the same inputs</li></ul></div>
+          <div class="does"><div class="cap">What an extension does with it</div>
+            <ul><li>Reads projected statements, not just cash movements: a receivables balance at end-November, a debt, a position per currency</li>
+                <li class="w"><em>Write-back</em>Feeds its own drivers into the budget (volumes, prices, headcount from your own systems) and the forecast rolls</li>
+                <li class="w"><em>Write-back</em>Books provisional entries from your logic, in a suspense account until someone confirms</li>
+                <li>Gets the same answer at the next close: saved rules, deterministic replay, audit trail</li></ul></div>
+        </div>
+        <div class="wb-kick">Everything above sits on this. <b>Start the ledger deck here if the audience is a controller rather than a builder.</b></div>
+      </div>
+    </div>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">08 / 9</div></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="slide" id="s10">
+    <video class="bgvideo" muted playsinline preload="auto"><source src="../img/outro.webm" type="video/webm"><source src="../img/outro.mp4" type="video/mp4"></video>
+    <div class="bgshade"></div>
+    <h2>Build on the system of record.</h2>
+    <div class="three">
+      <div><b>One pass</b><p>Pasted into Claude, Codex or Gemini CLI. No installation, no configuration, no software design to learn.</p></div>
+      <div><b>One environment</b><p>Tenant, rights, audit trail, versions. What you build is administered like everything else in the instance.</p></div>
+      <div><b>Every layer underneath</b><p>Treasury, working capital and FP&amp;A, already normalised, already measured, already read by the people who decide.</p></div>
+    </div>
+    <p class="cta">Five builder passes are open: one use case each, built with you in the chat. <a href="https://k-phi.com">k-phi.com</a>
+      <small>Want the data layers first? <a href="../">Start at the ledger</a>, the companion deck.</small></p>
+    <div class="chrome"><div class="sections"><span>The build</span><span class="here">The layers</span></div><div class="count">09 / 9</div></div>
+  </section>
+
+  <div id="modeRipple"></div>
+  <div class="nav" id="nav"><div id="dots"></div><div class="sep"></div><button id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle theme">☀</button></div>
+  <div id="bar"></div>
+</div></div>
+
+<script>
+
+/* ── deck navigation ── */
+(function(){
+  var slides=[].slice.call(document.querySelectorAll(".slide")),i=0,bar=document.getElementById("bar");
+  var dotsHost=document.getElementById("dots"),dots=[],transitioning=false;
+  slides.forEach(function(_,k){
+    var d=document.createElement("div");d.className="dot2";d.title="Slide "+(k+1);
+    d.addEventListener("click",function(e){e.stopPropagation();go(k)});
+    dotsHost.appendChild(d);dots.push(d);
+  });
+  function go(n){
+    if(n<0||n>=slides.length||n===i||transitioning)return;
+    transitioning=true;
+    var goingDown=n>i;
+    slides[i].classList.remove("on");
+    if(goingDown){slides[i].classList.add("above")}
+    else{slides[i].style.transform="translateY(100%) scale(0.95)";slides[i].style.opacity="0"}
+    if(!goingDown){
+      slides[n].style.transition="none";
+      slides[n].style.transform="translateY(-30%) scale(0.9)";
+      slides[n].style.opacity="0";
+      slides[n].style.filter="blur(6px)";
+      slides[n].offsetHeight;
+      slides[n].style.transition="";
+    }
+    dots[i].classList.remove("active");
+    i=n;
+    slides[i].classList.add("on");
+    slides[i].style.transform="";slides[i].style.opacity="";slides[i].style.filter="";
+    dots[i].classList.add("active");
+    bar.style.width=((i+1)/slides.length*100)+"%";
+    location.hash=i+1;
+    var v=slides[i].querySelector(".bgvideo");
+    if(v){try{v.currentTime=0;v.play().catch(function(){})}catch(e){}}
+    if(slides[i].querySelector("#z-g")&&window._kphiResetVersion)window._kphiResetVersion();
+    setTimeout(function(){
+      slides.forEach(function(s){s.classList.remove("above");s.style.transform="";s.style.opacity="";s.style.filter=""});
+      transitioning=false;
+    },750);
+  }
+  /* theme toggle with ripple */
+  var tbtn=document.getElementById("themeToggle"),ripple=document.getElementById("modeRipple");
+  function toggleTheme(){
+    var goingLight=!document.body.classList.contains("light-mode");
+    var r=tbtn.getBoundingClientRect();
+    var cx=r.left+r.width/2,cy=r.top+r.height/2;
+    var sz=Math.max(window.innerWidth,window.innerHeight)*2.2;
+    ripple.innerHTML="";
+    var dot=document.createElement("div");
+    dot.style.cssText="position:absolute;border-radius:50;width:"+sz+"px;height:"+sz+"px;"
+      +"left:"+(cx-sz/2)+"px;top:"+(cy-sz/2)+"px;"
+      +"background:"+(goingLight?"#F3F2EC":"#c8a84e")+";"
+      +"transform:scale(0);opacity:.18;"
+      +"animation:rippleOut .65s cubic-bezier(.22,1,.36,1) forwards;";
+    ripple.appendChild(dot);
+    setTimeout(function(){
+      document.body.classList.toggle("light-mode",goingLight);
+      tbtn.textContent=goingLight?"☾":"☀";
+      try{localStorage.setItem("kphi-deck-theme",goingLight?"light":"dark")}catch(e){}
+    },180);
+    setTimeout(function(){ripple.innerHTML=""},700);
+  }
+  tbtn.addEventListener("click",function(e){e.stopPropagation();toggleTheme()});
+  try{if(localStorage.getItem("kphi-deck-theme")==="light"){
+    document.body.classList.add("light-mode");tbtn.textContent="☾";
+  }}catch(e){}
+  document.getElementById("nav").addEventListener("click",function(e){e.stopPropagation()});
+  document.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key==="PageDown"||e.key===" "){e.preventDefault();go(i+1)}
+    if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();go(i-1)}
+    if(e.key==="Home")go(0); if(e.key==="End")go(slides.length-1);
+  });
+  document.getElementById("viewport").addEventListener("click",function(e){
+    if(e.target.closest("a"))return;
+    go(e.clientX<window.innerWidth*0.28?i-1:i+1);
+  });
+  var stage=document.getElementById("stage");
+  function fit(){
+    var s=Math.min(window.innerWidth/1280,window.innerHeight/720);
+    stage.style.transform="translate(-50%,-50%) scale("+s+")";
+  }
+  window.addEventListener("resize",fit);fit();
+  var start=parseInt((location.hash||"").replace("#","").replace(/[^0-9]/g,""),10);
+  if(isNaN(start)||start<1)start=1;
+  if(start-1===i){var v0=slides[i].querySelector(".bgvideo");if(v0){v0.play().catch(function(){})}}
+  else go(start-1);
+
+  /* fullscreen */
+  document.addEventListener("keydown",function(e){
+    if(e.key==="f"||e.key==="F"||e.key==="F11"){
+      e.preventDefault();
+      if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});
+      else document.exitFullscreen();
+    }
+  });
+  document.getElementById("viewport").addEventListener("dblclick",function(e){
+    if(e.target.closest(".nav")||e.target.closest("a"))return;
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});
+    else document.exitFullscreen();
+  });
+
+  /* scroll wheel navigation */
+  var wheelAcc=0,wheelTimer;
+  document.addEventListener("wheel",function(e){
+    if(transitioning)return;
+    e.preventDefault();
+    wheelAcc+=e.deltaY;
+    clearTimeout(wheelTimer);
+    wheelTimer=setTimeout(function(){wheelAcc=0},200);
+    if(Math.abs(wheelAcc)>60){
+      go(wheelAcc>0?i+1:i-1);
+      wheelAcc=0;
+    }
+  },{passive:false});
+
+  /* touch swipe navigation */
+  var touchY=null;
+  document.addEventListener("touchstart",function(e){
+    if(e.target.closest(".nav"))return;
+    touchY=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(touchY===null||transitioning)return;
+    var dy=touchY-e.changedTouches[0].clientY;
+    touchY=null;
+    if(Math.abs(dy)>50)go(dy>0?i+1:i-1);
+  },{passive:true});
+})();
+</script>
+
+</body>
+</html>
